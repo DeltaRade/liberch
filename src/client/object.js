@@ -17,8 +17,13 @@ class Client extends Discord.Client {
 	listenForCommands() {
 		this.on('message', (message)=>{
 			const prefixMention = new RegExp(`^<@!?${this.user.id}> `);
-			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : this.prefix;
-
+			let prefix;
+			if(this.mentionAsPrefix) {
+				prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : this.prefix;
+			}
+			else{
+				prefix = this.prefix;
+			}
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
 
 			const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -37,6 +42,7 @@ class Client extends Discord.Client {
 		});
 
 	}
+
 
 }
 

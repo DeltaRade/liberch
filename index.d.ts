@@ -18,20 +18,33 @@ export declare class Command{
     execute(message:Discord.Message, args:Array<String>):void;
 }
 
+
+export declare class FileWatch extends EventEmitter{
+    constructor();
+    public watchDir(directory:'string path')
+    public watchFile(filename:'pathlike')
+    public on(event:'changed',listener:(event:String,file:String)=>void):this
+}
+
 export declare class TextPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
-    create(message:Discord.Message, msg:String, options = { time:Number, maxprocess:Number, maxcollect:Number }):void
-    onCollect(m:Discord.Message)
-    onEnd(collection:Discord.Collection)
+    public create(message:Discord.Message, msg:String, options = { time:Number, maxprocess:Number, maxcollect:Number }):void
+    public onCollect(m:Discord.Message):void
+    public onEnd(collection:Discord.Collection):void
 }
 
 export declare class ReactionPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
-    create(message:Discord.Message, msg:String, options = { time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
-    onCollect(r:Discord.MessageReaction)
-    onEnd(collection:Discord.Collection)
+    public create(message:Discord.Message, msg:String, options = { time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
+    public onCollect(r:Discord.MessageReaction):void
+    public onEnd(collection:Discord.Collection):void
+}
+
+export declare class Utils{
+
+    static public findMembersMatch(message:Discord.Message, name:String):Array<Discord.GuildMember>
 }
