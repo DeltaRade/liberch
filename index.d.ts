@@ -1,6 +1,5 @@
 import EventEmitter from 'events'
 import Discord from 'discord.js'
-import { create } from 'domain';
 
 export declare class Client extends Discord.Client{
     constructor(options:{prefix:String,mentionAsPrefix:Boolean, options?:Object});
@@ -9,6 +8,7 @@ export declare class Client extends Discord.Client{
     loadCommands(directory:String):void
     listenForCommands():void;
     init(token:String):void
+    reloadFile(path:String):void
 } 
 
 export declare class Command{
@@ -30,21 +30,24 @@ export declare class TextPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
-    public create(message:Discord.Message, msg:String, options = { time:Number, maxprocess:Number, maxcollect:Number }):void
+    public create(message:Discord.Message, msg:String, options:{ time:Number, maxprocess:Number, maxcollect:Number }):void
     public onCollect(m:Discord.Message):void
-    public onEnd(collection:Discord.Collection):void
+    public onEnd(collection:Discord.Collection<any,any>):void
 }
 
 export declare class ReactionPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
-    public create(message:Discord.Message, msg:String, options = { time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
+    public create(message:Discord.Message, msg:String, options:{ time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
     public onCollect(r:Discord.MessageReaction):void
-    public onEnd(collection:Discord.Collection):void
+    public onEnd(collection:Discord.Collection<any,any>):void
 }
 
 export declare class Utils{
 
-    static public findMembersMatch(message:Discord.Message, name:String):Array<Discord.GuildMember>
+    public static findMembersMatch(guild:Discord.Guild, name:String):Array<Discord.GuildMember>
+    public static findChannelsMatch(guild:Discord.Guild, channelName:String):Array<Discord.Channel>
+    public static findEmojismatch(guild:Discord.Guild, emojiName:String):Array<Discord.Emoji>
+    public static findRolesMatch(guild:Discord.Guild, roleName:String):Array<Discord.Role>
 }

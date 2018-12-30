@@ -3,15 +3,15 @@ const CommandHandler = require('../command/handler');
 class Client extends Discord.Client {
 	constructor(options = { prefix:'', mentionAsPrefix:false, options:{} }) {
 		super(options.options);
-		this.prefix = options.prefix;
-		this.handler = new CommandHandler(this);
-		this.mentionAsPrefix = options.mentionAsPrefix;
+		this._prefix = options.prefix;
+		this._handler = new CommandHandler(this);
+		this._mentionAsPrefix = options.mentionAsPrefix;
 	}
 	init(token) {
 		this.login(token);
 	}
 	loadCommands(directory) {
-		this.handler.init(directory);
+		this._handler.init(directory);
 	}
 
 	listenForCommands() {
@@ -19,16 +19,16 @@ class Client extends Discord.Client {
 			const prefixMention = new RegExp(`^<@!?${this.user.id}> `);
 			let prefix;
 			if(this.mentionAsPrefix) {
-				prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : this.prefix;
+				prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : this._prefix;
 			}
 			else{
-				prefix = this.prefix;
+				prefix = this._prefix;
 			}
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
 
 			const args = message.content.slice(prefix.length).trim().split(/ +/g);
 			const commandName = args.shift().toLowerCase();
-			const command = this.handler.commands.get(commandName) || this.handler.commands.find(x=>x.alias && x.alias.includes(commandName));
+			const command = this._handler.commands.get(commandName) || this._handler.commands.find(x=>x.alias && x.alias.includes(commandName));
 			if(!command) {return;}
 			try{
 				command.execute(message, args);
@@ -43,6 +43,23 @@ class Client extends Discord.Client {
 
 	}
 
+	reloadFile(path) {
+
+		const command = require(`../../../${path}`);
+		// message.client.commands.delete(command.name)
+
+		this._handler.commands.delete(new command().name);
+		setTimeout(() => {
+			this._handler.commands.set(command.name, command);
+		}, 200);
+		delete require.cache[require.resolve(`../../../${path}`)];
+
+		const nCommand = require(`../../../${path}`);
+		setTimeout(() => {
+			const x = new nCommand();
+			this._handler.commands.set(x.name, x);
+		}, 200);
+	}
 
 }
 
