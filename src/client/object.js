@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
+const EventEmit = require('../events/eventhandler');
 class Client extends Discord.Client {
 	constructor(options = { prefix:'', mentionAsPrefix:false, options:{} }) {
 		super(options.options);
 		this._prefix = options.prefix;
 		this._handler = new CommandHandler(this);
+		this.customEvents = new EventEmit();
 		this._mentionAsPrefix = options.mentionAsPrefix;
 	}
 	init(token) {
@@ -29,13 +31,14 @@ class Client extends Discord.Client {
 			const args = message.content.slice(prefix.length).trim().split(/ +/g);
 			const commandName = args.shift().toLowerCase();
 			const command = this._handler.commands.get(commandName) || this._handler.commands.find(x=>x.alias && x.alias.includes(commandName));
-			if(!command) {return;}
+			if(!command) {return this.customEvents.emit('commandInvalid', commandName);}
+
 			try{
 				command.execute(message, args);
 
 			}
 			catch(error) {
-				console.log(error);
+				this.customEvents.emit('commandError', error);
 			}
 
 

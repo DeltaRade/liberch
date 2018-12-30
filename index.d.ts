@@ -5,19 +5,27 @@ export declare class Client extends Discord.Client{
     constructor(options:{prefix:String,mentionAsPrefix:Boolean, options?:Object});
     constructor(options:{prefix:String});
     protected prefix:String;
-    loadCommands(directory:String):void
-    listenForCommands():void;
-    init(token:String):void
-    reloadFile(path:String):void
+    protected customEvents:_CustomEvents
+    public loadCommands(directory:String):void
+    public listenForCommands():void;
+    public init(token:String):void
+    public reloadFile(path:String):void
+  
 } 
 
 export declare class Command{
     constructor(options:{name:String,alias:Array<String>})
     constructor(options:{name:String})
     
-    execute(message:Discord.Message, args:Array<String>):void;
+    public execute(message:Discord.Message, args:Array<String>):void;
 }
 
+
+export declare class _CustomEvents{
+
+    public on(event:'commandError',listener:(error:Error)=>void):this;
+    public on(event:'commandInvalid',listener:(command:String)=>void):this;
+}
 
 export declare class FileWatch extends EventEmitter{
     constructor();
