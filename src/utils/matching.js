@@ -11,22 +11,22 @@ class Utils {
 	}
 
 	static async findChannelsMatch(guild, channelName) {
-		const array = guild.members.array()
-			.filter(x=>x.user.username.includes(channelName))
+		const array = guild.channels.array()
+			.filter(x=>x.name.includes(channelName))
 			.map(x=>x);
 		return array;
 	}
 
 	static async findEmojisMatch(guild, emojiName) {
 		const array = guild.emojis.array()
-			.filter(x=>x.user.username.includes(emojiName))
+			.filter(x=>x.name.includes(emojiName))
 			.map(x=>x);
 		return array;
 	}
 
 	static async findRolesMatch(guild, roleName) {
 		const array = guild.roles.array()
-			.filter(x=>x.user.username.includes(roleName))
+			.filter(x=>x.name.includes(roleName))
 			.map(x=>x);
 		return array;
 	}

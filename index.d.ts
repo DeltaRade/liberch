@@ -48,6 +48,6 @@ export declare class Utils{
 
     public static findMembersMatch(guild:Discord.Guild, name:String):Array<Discord.GuildMember>
     public static findChannelsMatch(guild:Discord.Guild, channelName:String):Array<Discord.Channel>
-    public static findEmojismatch(guild:Discord.Guild, emojiName:String):Array<Discord.Emoji>
+    public static findEmojisMatch(guild:Discord.Guild, emojiName:String):Array<Discord.Emoji>
     public static findRolesMatch(guild:Discord.Guild, roleName:String):Array<Discord.Role>
 }

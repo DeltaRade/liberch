@@ -44,23 +44,33 @@ class Client extends Discord.Client {
 	}
 
 	reloadFile(path) {
-
 		const command = require(`../../../${path}`);
-		// message.client.commands.delete(command.name)
+		if(typeof command == 'function') {
 
-		this._handler.commands.delete(new command().name);
-		setTimeout(() => {
-			this._handler.commands.set(command.name, command);
-		}, 200);
-		delete require.cache[require.resolve(`../../../${path}`)];
+			console.log(typeof command);
+			if(new command().name) {
+				this._handler.commands.delete(new command().name);
+				setTimeout(() => {
+					this._handler.commands.set(command.name, command);
+				}, 100);
+				delete require.cache[require.resolve(`../../../${path}`)];
 
-		const nCommand = require(`../../../${path}`);
-		setTimeout(() => {
-			const x = new nCommand();
-			this._handler.commands.set(x.name, x);
-		}, 200);
+				const nCommand = require(`../../../${path}`);
+				setTimeout(() => {
+					const x = new nCommand();
+					this._handler.commands.set(x.name, x);
+				}, 100);
+
+			}
+			else{
+				delete require.cache[require.resolve(`../../../${path}`)];
+			}
+
+		}
+		else{
+			delete require.cache[require.resolve(`../../../${path}`)];
+		}
 	}
-
 }
 
 module.exports = Client;
