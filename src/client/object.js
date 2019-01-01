@@ -1,40 +1,41 @@
 const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
+// const EventHandler = require('../events/handler');
 const EventEmit = require('../events/eventhandler');
 class Client extends Discord.Client {
-	constructor(options = { prefix:'', mentionAsPrefix:false, options:{} }) {
+	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false, options:{} }) {
 		super(options.options);
-		this._prefix = options.prefix;
-		this._handler = new CommandHandler(this);
+		this._prefixes = options.prefixes;
+		this._commandhandler = new CommandHandler(this);
+		// this._eventhandler = new EventHandler(this);
+		this.ownerID = options.ownerID;
 		this.customEvents = new EventEmit();
 		this._mentionAsPrefix = options.mentionAsPrefix;
 	}
-	init(token) {
-		this.login(token);
-	}
+
 	loadCommands(directory) {
-		this._handler.init(directory);
+		this._commandhandler.init(directory);
 	}
 
 	listenForCommands() {
 		this.on('message', (message)=>{
-			const prefixMention = new RegExp(`^<@!?${this.user.id}> `);
+
 			let prefix;
-			if(this.mentionAsPrefix) {
-				prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : this._prefix;
+			if(this._mentionAsPrefix) {
+				this._prefixes.push(`<@!?${message.client.user.id}>`);
 			}
-			else{
-				prefix = this._prefix;
-			}
+
+			const prefixMention = new RegExp(`^(${this._prefixes.join('|')})`);
+			prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
 
 			const args = message.content.slice(prefix.length).trim().split(/ +/g);
 			const commandName = args.shift().toLowerCase();
-			const command = this._handler.commands.get(commandName) || this._handler.commands.find(x=>x.alias && x.alias.includes(commandName));
-			if(!command) {return this.customEvents.emit('commandInvalid', commandName);}
+			const command = this._commandhandler.commands.get(commandName) || this._commandhandler.commands.find(x=>x.alias && x.alias.includes(commandName));
+			if(!command) {return this.customEvents.emit('commandInvalid', message.member, commandName);}
 
 			try{
-				command.execute(message, args);
+				command.execute(this, message, args);
 
 			}
 			catch(error) {
@@ -50,18 +51,17 @@ class Client extends Discord.Client {
 		const command = require(`../../../${path}`);
 		if(typeof command == 'function') {
 
-			console.log(typeof command);
 			if(new command().name) {
-				this._handler.commands.delete(new command().name);
+				this._commandhandler.commands.delete(new command().name);
 				setTimeout(() => {
-					this._handler.commands.set(command.name, command);
+					this._commandhandler.commands.set(command.name, command);
 				}, 100);
 				delete require.cache[require.resolve(`../../../${path}`)];
 
 				const nCommand = require(`../../../${path}`);
 				setTimeout(() => {
 					const x = new nCommand();
-					this._handler.commands.set(x.name, x);
+					this._commandhandler.commands.set(x.name, x);
 				}, 100);
 
 			}

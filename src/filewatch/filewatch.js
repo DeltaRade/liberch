@@ -27,7 +27,7 @@ class FileWatch extends events.EventEmitter {
 				fsWait = setTimeout(() => {
 					fsWait = false;
 				}, 1000);
-				this.emit('changed', event, file);
+				this.emit('dirChanged', event, dir, file);
 			}
 
 		});

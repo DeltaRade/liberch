@@ -2,13 +2,13 @@ import EventEmitter from 'events'
 import Discord from 'discord.js'
 
 export declare class Client extends Discord.Client{
-    constructor(options:{prefix:String,mentionAsPrefix:Boolean, options?:Object});
-    constructor(options:{prefix:String});
-    protected prefix:String;
+    constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean, options?:Object});
+    constructor(options:{prefixes:[]});
+    //protected prefix:String;
+    protected ownerID:String
     protected customEvents:_CustomEvents
     public loadCommands(directory:String):void
     public listenForCommands():void;
-    public init(token:String):void
     public reloadFile(path:String):void
   
 } 
@@ -17,14 +17,14 @@ export declare class Command{
     constructor(options:{name:String,alias:Array<String>})
     constructor(options:{name:String})
     
-    public execute(message:Discord.Message, args:Array<String>):void;
+    public execute(client:Client,message:Discord.Message, args:Array<String>):void;
 }
 
 
 export declare class _CustomEvents{
 
     public on(event:'commandError',listener:(error:Error)=>void):this;
-    public on(event:'commandInvalid',listener:(command:String)=>void):this;
+    public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
 }
 
 export declare class FileWatch extends EventEmitter{
@@ -32,6 +32,7 @@ export declare class FileWatch extends EventEmitter{
     public watchDir(directory:'string path')
     public watchFile(filename:'pathlike')
     public on(event:'changed',listener:(event:String,file:String)=>void):this
+    public on(event:'dirChanged',listener:(event:String,directory:String,file:String)=>void):this
 }
 
 export declare class TextPrompt{

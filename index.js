@@ -1,7 +1,7 @@
 const Client = require('./src/client/object');
 const Command = require('./src/command/command');
 const prompt = require('./src/prompt/prompt');
-const Utils = require('./src/utils/matching');
+const Utils = require('./src/utils/utils');
 const FileWatch = require('./src/filewatch/filewatch');
 module.exports = {
 	Client:Client,
