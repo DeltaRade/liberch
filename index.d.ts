@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import Discord from 'discord.js'
-
+import sqlite3 from 'sqlite3'
 export declare class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean, options?:Object});
     constructor(options:{prefixes:[]});
@@ -8,6 +8,7 @@ export declare class Client extends Discord.Client{
     protected ownerID:String
     protected customEvents:_CustomEvents
     public loadCommands(directory:String):void
+    public loadEvents(directory:String):void
     public listenForCommands():void;
     public reloadFile(path:String):void
   
@@ -25,9 +26,10 @@ export declare class _CustomEvents{
 
     public on(event:'commandError',listener:(error:Error)=>void):this;
     public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
+    public on(event:'eventError',listener:(file:String,err:Error)=>void):this
 }
 
-export declare class FileWatch extends EventEmitter{
+export declare class FileWatch{
     constructor();
     public watchDir(directory:'string path')
     public watchFile(filename:'pathlike')
@@ -51,6 +53,18 @@ export declare class ReactionPrompt{
     public create(message:Discord.Message, msg:String, options:{ time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
     public onCollect(r:Discord.MessageReaction):void
     public onEnd(collection:Discord.Collection<any,any>):void
+}
+
+export declare class SQLite3 {
+    constructor(client:Client,filename:String)
+    protected database:sqlite3.Database
+
+    public async createTable(tablename:String,values:[])
+    public async insert(tablename:String,columns:[],values:[])
+    public async get(tablename:string,column:String,value:String,callback:(row:[])=>void)
+    public on(event:'connected',listener:()=>void):this
+    public on(event:'error',listener:(error:Error)=>void):this
+    public on(event:'changed',listener:()=>void):this
 }
 
 export declare class Utils{

@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
-// const EventHandler = require('../events/handler');
+const EventHandler = require('../events/handler');
 const EventEmit = require('../events/eventhandler');
 class Client extends Discord.Client {
 	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false, options:{} }) {
 		super(options.options);
 		this._prefixes = options.prefixes;
 		this._commandhandler = new CommandHandler(this);
+		this._eventhandler = new EventHandler(this);
 		// this._eventhandler = new EventHandler(this);
 		this.ownerID = options.ownerID;
 		this.customEvents = new EventEmit();
@@ -20,13 +21,12 @@ class Client extends Discord.Client {
 	listenForCommands() {
 		this.on('message', (message)=>{
 
-			let prefix;
 			if(this._mentionAsPrefix) {
 				this._prefixes.push(`<@!?${message.client.user.id}>`);
 			}
 
 			const prefixMention = new RegExp(`^(${this._prefixes.join('|')})`);
-			prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
+			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
 
 			const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -47,6 +47,9 @@ class Client extends Discord.Client {
 
 	}
 
+	loadEvents(directory) {
+		this._eventhandler.init(directory);
+	}
 	reloadFile(path) {
 		const command = require(`../../../${path}`);
 		if(typeof command == 'function') {

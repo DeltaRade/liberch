@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 class Utils {
 	constructor() {
 		throw new Error('CLASS CANNOT BE INSTANTIATED');

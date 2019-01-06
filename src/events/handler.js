@@ -1,10 +1,8 @@
-const Discord = require('discord.js');
 const fs = require('fs');
 
 class EventHandler {
 	constructor(client) {
 		this.client = client;
-		this.events = new Discord.Collection();
 	}
 
 	init(directory) {
@@ -12,10 +10,11 @@ class EventHandler {
 		for (const file of eventsFiles) {
 			// const f = require('../../tests/events/test');
 			// console.log(f);
-			const event = require(`../../${directory}/${file}`);
-			const obj = new event();
+			const event = require(`../../../${directory}/${file}`);
+			const eventname = file.split('.')[0];
 			// console.log(obj);
-			this.events.set(obj.id, obj);
+			this.client.on(eventname, event.bind(null, this.client));
+			delete require.cache[require.resolve(`../../../${directory}/${file}`)];
 		}
 	}
 }
