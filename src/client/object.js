@@ -5,12 +5,13 @@ const EventEmit = require('../events/eventhandler');
 class Client extends Discord.Client {
 	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false, options:{} }) {
 		super(options.options);
+
+		this.ownerID = options.ownerID;
+		this.events = new EventEmit();
+
 		this._prefixes = options.prefixes;
 		this._commandhandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
-		// this._eventhandler = new EventHandler(this);
-		this.ownerID = options.ownerID;
-		this.customEvents = new EventEmit();
 		this._mentionAsPrefix = options.mentionAsPrefix;
 	}
 
@@ -32,14 +33,15 @@ class Client extends Discord.Client {
 			const args = message.content.slice(prefix.length).trim().split(/ +/g);
 			const commandName = args.shift().toLowerCase();
 			const command = this._commandhandler.commands.get(commandName) || this._commandhandler.commands.find(x=>x.alias && x.alias.includes(commandName));
-			if(!command) {return this.customEvents.emit('commandInvalid', message.member, commandName);}
+			if(!command) {return this.events.emit('commandInvalid', message.member, commandName);}
 
 			try{
-				command.execute(this, message, args);
 
+				command.execute(this, message, args);
 			}
+
 			catch(error) {
-				this.customEvents.emit('commandError', error);
+				this.events.emit('commandError', error);
 			}
 
 

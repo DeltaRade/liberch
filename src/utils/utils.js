@@ -1,3 +1,4 @@
+const ms = require('ms');
 class Utils {
 	constructor() {
 		throw new Error('CLASS CANNOT BE INSTANTIATED');
@@ -31,5 +32,8 @@ class Utils {
 		return array;
 	}
 
+	static msToHourAprox(time) {
+		return ms(ms(time), { long:true });
+	}
 }
 module.exports = Utils;

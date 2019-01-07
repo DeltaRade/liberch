@@ -13,9 +13,10 @@ class SQLite3 extends events.EventEmitter {
 				this.emit('connected');
 			}
 		});
+
 	}
 
-	async createTable(tablename, values = []) {
+	createTable(tablename, values = []) {
 		this.database.run(`CREATE TABLE IF NOT EXISTS ${tablename} (${values.join(',')})`, (thisres, err)=>{
 			if(err) {
 				this.emit('error', err);
@@ -23,7 +24,7 @@ class SQLite3 extends events.EventEmitter {
 		});
 	}
 
-	async insert(tablename, columns = [], values = []) {
+	insert(tablename, columns = [], values = []) {
 		this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
 			if(err) {
 				this.emit('error', err);
@@ -32,13 +33,21 @@ class SQLite3 extends events.EventEmitter {
 		});
 	}
 
-	async get(tablename, column, value, callback) {
+	get(tablename, column, value, callback) {
 		this.database.get(`SELECT * FROM ${tablename} WHERE ${column}='${value}'`, (err, row)=>{
 			if(err) {			// * || column
 				this.emit('error', err);
 			}
 			else{
 				callback(row);
+			}
+		});
+	}
+
+	close() {
+		this.database.close(err=>{
+			if(err) {
+				this.emit('error', err);
 			}
 		});
 	}

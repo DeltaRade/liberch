@@ -4,9 +4,9 @@ import sqlite3 from 'sqlite3'
 export declare class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean, options?:Object});
     constructor(options:{prefixes:[]});
-    //protected prefix:String;
+    protected prefix:Array<String>
     protected ownerID:String
-    protected customEvents:_CustomEvents
+    protected events:_CustomEvents
     public loadCommands(directory:String):void
     public loadEvents(directory:String):void
     public listenForCommands():void;
@@ -15,12 +15,19 @@ export declare class Client extends Discord.Client{
 } 
 
 export declare class Command{
-    constructor(options:{name:String,alias:Array<String>})
     constructor(options:{name:String})
+    constructor(options:{name:String,alias:Array<String>})
     
     public execute(client:Client,message:Discord.Message, args:Array<String>):void;
 }
 
+export declare class Cooldown{
+    constructor()
+
+    public add(value):void
+    public isOnCooldown(value):Boolean
+    public remove(value):void
+}
 
 export declare class _CustomEvents{
 
@@ -59,12 +66,13 @@ export declare class SQLite3 {
     constructor(client:Client,filename:String)
     protected database:sqlite3.Database
 
-    public async createTable(tablename:String,values:[])
-    public async insert(tablename:String,columns:[],values:[])
-    public async get(tablename:string,column:String,value:String,callback:(row:[])=>void)
+    public createTable(tablename:String,values:[]):void
+    public insert(tablename:String,columns:[],values:[]):void
+    public get(tablename:string,column:String,value:String,callback:(row:[])=>void):void
+    public close():void
     public on(event:'connected',listener:()=>void):this
     public on(event:'error',listener:(error:Error)=>void):this
-    public on(event:'changed',listener:()=>void):this
+    
 }
 
 export declare class Utils{
