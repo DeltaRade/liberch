@@ -32,7 +32,7 @@ class Utils {
 		return array;
 	}
 
-	static msToHourAprox(time) {
+	static msToTime(time) {
 		return ms(ms(time), { long:true });
 	}
 }

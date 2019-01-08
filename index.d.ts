@@ -81,4 +81,6 @@ export declare class Utils{
     public static findChannelsMatch(guild:Discord.Guild, channelName:String):Array<Discord.Channel>
     public static findEmojisMatch(guild:Discord.Guild, emojiName:String):Array<Discord.Emoji>
     public static findRolesMatch(guild:Discord.Guild, roleName:String):Array<Discord.Role>
+    
+    public static msToTime(value:Number):String
 }

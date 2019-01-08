@@ -11,5 +11,9 @@
     "framework"
   ],
   "author": "DeltaRade",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "sqlite3": "^4.0.4"
+  }
 }
