@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-
-class TextPrompt {
+const events = require('events');
+class TextPrompt extends events.EventEmitter {
 	constructor(client) {
+		super();
 		this.client = client;
 		this.collector;
 		this.time;
@@ -14,19 +14,15 @@ class TextPrompt {
 		option['maxMatches'] = option.maxcollect;
 		const filter = (m)=>!m.author.bot;
 		this.collector = message.channel.createMessageCollector(filter, option);
-		this.collector.on('collect', (m)=>{this.onCollect(m);});
-		this.collector.on('end', (collected)=>{this.onEnd(collected);});
+		this.collector.on('collect', (m)=>{this.emit('collect', m);});
+		this.collector.on('end', (collected)=>{this.emit('end', collected);});
 	}
-	onCollect(m) {
-		throw new Error('onCollect_NOT_IMPLEMENTED');
-	}
-	onEnd(collected) {
-		throw new Error('onEnd_NOT_IMPLEMENTED');
-	}
+
 }
 
-class ReactionPrompt {
+class ReactionPrompt extends events.EventEmitter {
 	constructor(client) {
+		super();
 		this.client = client;
 		this.time;
 	}
@@ -43,18 +39,13 @@ class ReactionPrompt {
 		const filter = (reaction, user)=>(options.emojisToCollect.includes(reaction.emoji.name) || options.emojisToCollect.includes(reaction.emoji.id)) && !user.bot;
 		const cll = x.createReactionCollector(filter, option);
 		cll.on('collect', (r)=>{
-			this.onCollect(r);
+			this.emit('collect', r);
 		});
 		cll.on('end', (collected)=>{
-			this.onEnd(collected);
+			this.emit('end', collected);
 		});
 	}
-	onCollect(r) {
-		throw new Error('onCollect_NOT_IMPLEMENTED');
-	}
-	onEnd(collected) {
-		throw new Error('onEnd_NOT_IMPLEMENTED');
-	}
+
 }
 exports.TextPrompt = TextPrompt;
 exports.ReactionPrompt = ReactionPrompt;

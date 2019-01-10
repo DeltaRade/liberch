@@ -33,7 +33,7 @@ class Utils {
 	}
 
 	static msToTime(time) {
-		return ms(ms(time), { long:true });
+		return ms(time, { long:true });
 	}
 }
 module.exports = Utils;

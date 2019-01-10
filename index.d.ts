@@ -33,7 +33,7 @@ export declare class _CustomEvents{
 
     public on(event:'commandError',listener:(error:Error)=>void):this;
     public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
-    public on(event:'eventError',listener:(file:String,err:Error)=>void):this
+    
 }
 
 export declare class FileWatch{
@@ -49,8 +49,8 @@ export declare class TextPrompt{
     protected collector:Discord.MessageCollector
     protected time:number
     public create(message:Discord.Message, msg:String, options:{ time:Number, maxprocess:Number, maxcollect:Number }):void
-    public onCollect(m:Discord.Message):void
-    public onEnd(collection:Discord.Collection<any,any>):void
+    public on(event:'collect',listener:(message:Discord.Message)=>void):this
+    public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
 }
 
 export declare class ReactionPrompt{
@@ -58,8 +58,8 @@ export declare class ReactionPrompt{
     protected collector:Discord.MessageCollector
     protected time:number
     public create(message:Discord.Message, msg:String, options:{ time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
-    public onCollect(r:Discord.MessageReaction):void
-    public onEnd(collection:Discord.Collection<any,any>):void
+    public on(event:'collect',listener:(reaction:Discord.MessageReaction)=>void):this
+    public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
 }
 
 export declare class SQLite3 {
