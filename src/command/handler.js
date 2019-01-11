@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const path = require('path');
 class CommandHandler {
 	constructor(client) {
 		this.client = client;
@@ -11,7 +12,7 @@ class CommandHandler {
 		for (const file of commandFiles) {
 			// const f = require('../../../commands/test');
 			// console.log(f);
-			const command = require(`${directory}/${file}`);
+			const command = require(path.resolve(`${directory}/${file}`));
 			const obj = new command();
 			// console.log(obj);
 			this.commands.set(obj.name, obj);
