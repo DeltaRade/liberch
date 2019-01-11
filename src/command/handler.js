@@ -11,7 +11,7 @@ class CommandHandler {
 		for (const file of commandFiles) {
 			// const f = require('../../../commands/test');
 			// console.log(f);
-			const command = require(`../../../${directory}/${file}`);
+			const command = require(`${directory}/${file}`);
 			const obj = new command();
 			// console.log(obj);
 			this.commands.set(obj.name, obj);

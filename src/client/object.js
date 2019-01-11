@@ -53,7 +53,8 @@ class Client extends Discord.Client {
 		this._eventhandler.init(directory);
 	}
 	reloadFile(path) {
-		const command = require(`../../../${path}`);
+		// ../../../
+		const command = require(`${path}`);
 		if(typeof command == 'function') {
 
 			if(new command().name) {
@@ -61,9 +62,9 @@ class Client extends Discord.Client {
 				setTimeout(() => {
 					this._commandhandler.commands.set(command.name, command);
 				}, 100);
-				delete require.cache[require.resolve(`../../../${path}`)];
+				delete require.cache[require.resolve(`${path}`)];
 
-				const nCommand = require(`../../../${path}`);
+				const nCommand = require(`${path}`);
 				setTimeout(() => {
 					const x = new nCommand();
 					this._commandhandler.commands.set(x.name, x);
@@ -71,12 +72,12 @@ class Client extends Discord.Client {
 
 			}
 			else{
-				delete require.cache[require.resolve(`../../../${path}`)];
+				delete require.cache[require.resolve(`${path}`)];
 			}
 
 		}
 		else{
-			delete require.cache[require.resolve(`../../../${path}`)];
+			delete require.cache[require.resolve(`${path}`)];
 		}
 	}
 }

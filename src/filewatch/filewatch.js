@@ -33,10 +33,6 @@ class FileWatch extends events.EventEmitter {
 		});
 	}
 
-	reloadFile(path) {
-
-		delete require.cache[require.resolve(`../../../${path}`)];
-	}
 }
 
 module.exports = FileWatch;

@@ -10,11 +10,11 @@ class EventHandler {
 		for (const file of eventsFiles) {
 			// const f = require('../../tests/events/test');
 			// console.log(f);
-			const event = require(`../../../${directory}/${file}`);
+			const event = require(`${directory}/${file}`);
 			const eventname = file.split('.')[0];
 			// console.log(obj);
 			this.client.on(eventname, event.bind(null, this.client));
-			delete require.cache[require.resolve(`../../../${directory}/${file}`)];
+			delete require.cache[require.resolve(`${directory}/${file}`)];
 		}
 	}
 }
