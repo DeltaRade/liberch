@@ -1,7 +1,9 @@
-import EventEmitter from 'events'
+declare module 'liberch' {
+    import EventEmitter from 'events'
 import Discord from 'discord.js'
 import sqlite3 from 'sqlite3'
-export declare class Client extends Discord.Client{
+
+export  class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean, options?:Object});
     constructor(options:{prefixes:[]});
     protected prefix:Array<String>
@@ -14,14 +16,14 @@ export declare class Client extends Discord.Client{
   
 } 
 
-export declare class Command{
+export  class Command{
     constructor(options:{name:String})
     constructor(options:{name:String,alias:Array<String>})
     
     public execute(client:Client,message:Discord.Message, args:Array<String>):void;
 }
 
-export declare class Cooldown{
+export  class Cooldown{
     constructor()
 
     public add(value):void
@@ -29,14 +31,14 @@ export declare class Cooldown{
     public remove(value):void
 }
 
-export declare class _CustomEvents{
+export class _CustomEvents{
 
     public on(event:'commandError',listener:(error:Error)=>void):this;
     public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
     
 }
 
-export declare class FileWatch{
+export  class FileWatch{
     constructor();
     public watchDir(directory:'string path')
     public watchFile(filename:'pathlike')
@@ -44,7 +46,7 @@ export declare class FileWatch{
     public on(event:'dirChanged',listener:(event:String,directory:String,file:String)=>void):this
 }
 
-export declare class TextPrompt{
+export  class TextPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
@@ -53,7 +55,7 @@ export declare class TextPrompt{
     public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
 }
 
-export declare class ReactionPrompt{
+export  class ReactionPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
@@ -62,7 +64,7 @@ export declare class ReactionPrompt{
     public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
 }
 
-export declare class SQLite3 {
+export  class SQLite3 {
     constructor(client:Client,filename:String)
     protected database:sqlite3.Database
 
@@ -75,7 +77,7 @@ export declare class SQLite3 {
     
 }
 
-export declare class Utils{
+export  class Utils{
 
     public static findMembersMatch(guild:Discord.Guild, name:String):Array<Discord.GuildMember>
     public static findChannelsMatch(guild:Discord.Guild, channelName:String):Array<Discord.Channel>
@@ -83,4 +85,6 @@ export declare class Utils{
     public static findRolesMatch(guild:Discord.Guild, roleName:String):Array<Discord.Role>
     
     public static msToTime(value:Number):String
+}
+
 }
