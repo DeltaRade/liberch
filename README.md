@@ -10,13 +10,11 @@ and other stuff**
 `npm install https://github.com/DeltaRade/liberch`
 
 # Example code
-```js
+``js
 const liberch=require('liberch');
 const client=new liberch.Client({prefixes:['\\/'],ownerID:'',mentionAsPrefix:false})
 client.loadCommands('commands')
 client.listenForCommands()
 client.loadEvents('events')
 
-client.login('token')```
-
-def
+client.login('token')``
