@@ -1,11 +1,10 @@
 declare module 'liberch' {
-    import EventEmitter from 'events'
-import Discord from 'discord.js'
+import EventEmitter from 'events'
+import Discord, { Attachment, FileOptions } from 'discord.js'
 import sqlite3 from 'sqlite3'
 
 export  class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean, options?:Object});
-    constructor(options:{prefixes:[]});
     protected prefix:Array<String>
     protected ownerID:String
     protected events:_CustomEvents
@@ -17,7 +16,6 @@ export  class Client extends Discord.Client{
 } 
 
 export  class Command{
-    constructor(options:{name:String})
     constructor(options:{name:String,alias:Array<String>})
     
     public execute(client:Client,message:Discord.Message, args:Array<String>):void;
@@ -26,9 +24,10 @@ export  class Command{
 export  class Cooldown{
     constructor()
 
-    public add(value):void
-    public isOnCooldown(value):Boolean
-    public remove(value):void
+    public add(value:any):void
+    public isOnCooldown(value:any):Boolean
+    public remove(value:any):void
+    public removeAfter(value:any,time:number):void
 }
 
 export class _CustomEvents{
@@ -84,6 +83,8 @@ export  class Utils{
     public static findEmojisMatch(guild:Discord.Guild, emojiName:String):Array<Discord.Emoji>
     public static findRolesMatch(guild:Discord.Guild, roleName:String):Array<Discord.Role>
     
+    public permissionsFlags():Array<String>
+    public permissionNumberToFlag(number:number):Array<String>
     public static msToTime(value:Number):String
 }
 

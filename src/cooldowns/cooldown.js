@@ -13,6 +13,12 @@ class Cooldown {
 	remove(value) {
 		this._cooldown.delete(value);
 	}
+
+	removeAfter(value, time) {
+		setTimeout(() => {
+			this._cooldown.delete(value);
+		}, time);
+	}
 }
 
 module.exports = Cooldown;

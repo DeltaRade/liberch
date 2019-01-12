@@ -1,8 +1,10 @@
 const ms = require('ms');
+const Discord = require('discord.js');
 class Utils {
 	constructor() {
 		throw new Error('CLASS CANNOT BE INSTANTIATED');
 	}
+
 
 	static async findMembersMatch(guild, name) {
 		const array = guild.members.array()
@@ -32,6 +34,20 @@ class Utils {
 		return array;
 	}
 
+	static permissionsFlags() {
+		return Object.keys(Discord.Permissions.FLAGS);
+	}
+
+	static permissionNumberToFlag(num) {
+		const arr = [];
+		for (const key of Object.keys(Discord.Permissions.FLAGS)) {
+			if (num & Discord.Permissions.FLAGS[key]) {
+				arr.push(key);
+			}
+		}
+
+		return arr;
+	}
 	static msToTime(time) {
 		return ms(time, { long:true });
 	}
