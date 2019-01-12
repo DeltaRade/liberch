@@ -17,4 +17,6 @@ client.loadCommands('commands')
 client.listenForCommands()
 client.loadEvents('events')
 
-client.login('token')```d
+client.login('token') 
+```
+d
