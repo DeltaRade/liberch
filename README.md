@@ -1,4 +1,4 @@
-# liberch
+## liberch
 It is A framework for Discord.js
 **Features
 -command and event handler
@@ -6,10 +6,11 @@ It is A framework for Discord.js
 -file reload
 and other stuff**
 
-# Installation 
+## Installation 
 `npm install https://github.com/DeltaRade/liberch`
 
-# Example code
+## Example code
+
 ```javascript
 const liberch=require('liberch');
 const client=new liberch.Client({prefixes:['\\/'],ownerID:'',mentionAsPrefix:false})
@@ -19,4 +20,3 @@ client.loadEvents('events')
 
 client.login('token') 
 ```
-d
