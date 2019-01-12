@@ -1,12 +1,11 @@
 # liberch
 It is A framework for Discord.js
 
-**Features
-------------
--command and event handler
--utility functions
--file reload
-and other stuff**
+**Features**
+  * **command and event handler**
+  * **utility functions**
+  * **file reload**
+  * **and other stuff**
 
 # Installation 
 `npm install https://github.com/DeltaRade/liberch`
