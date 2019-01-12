@@ -1,6 +1,6 @@
 {
   "name": "liberch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "discord.js framework",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,6 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "sqlite3": "^4.0.4"
-  }
+  },
+  "types": "index.d.ts"
 }

@@ -18,9 +18,7 @@ class Client extends Discord.Client {
 
 	loadCommands(directory) {
 		this._commandhandler.init(directory);
-	}
 
-	listenForCommands() {
 		this.on('message', (message)=>{
 
 			if(this._mentionAsPrefix) {
