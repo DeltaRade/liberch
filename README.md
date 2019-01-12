@@ -1,6 +1,7 @@
 # liberch
 It is A framework for Discord.js
 **Features
+------------
 -command and event handler
 -utility functions
 -file reload
