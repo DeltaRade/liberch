@@ -4,13 +4,13 @@ const EventHandler = require('../events/handler');
 const EventEmit = require('../events/eventhandler');
 const peth = require('path');
 class Client extends Discord.Client {
-	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false, options:{} }) {
-		super(options.options);
+	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false }) {
+		super(options);
 
 		this.ownerID = options.ownerID;
 		this.events = new EventEmit();
 
-		this._prefixes = options.prefixes;
+		this.prefixes = options.prefixes;
 		this._commandhandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
@@ -20,12 +20,11 @@ class Client extends Discord.Client {
 		this._commandhandler.init(directory);
 
 		this.on('message', (message)=>{
-
 			if(this._mentionAsPrefix) {
-				this._prefixes.push(`<@!?${message.client.user.id}>`);
+				this.prefixes.push(`<@!?${message.client.user.id}>`);
 			}
 
-			const prefixMention = new RegExp(`^(${this._prefixes.join('|')})`);
+			const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
 			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
 
@@ -80,5 +79,4 @@ class Client extends Discord.Client {
 		}
 	}
 }
-
 module.exports = Client;

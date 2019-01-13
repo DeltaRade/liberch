@@ -1,8 +1,8 @@
-const Discord = require('discord.js');
+const { RichEmbed } = require('discord.js');
 
 class EmbedBuilder {
 	constructor() {
-		this.embed = new Discord.RichEmbed();
+		this.embed = new RichEmbed();
 	}
 
 	attachFile(file) {

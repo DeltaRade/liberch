@@ -1,5 +1,5 @@
-const ms = require('ms');
-const Discord = require('discord.js');
+const { ms } = require('ms');
+const { Permissions } = require('discord.js');
 class Utils {
 	constructor() {
 		throw new Error('CLASS CANNOT BE INSTANTIATED');
@@ -35,13 +35,13 @@ class Utils {
 	}
 
 	static permissionsFlags() {
-		return Object.keys(Discord.Permissions.FLAGS);
+		return Object.keys(Permissions.FLAGS);
 	}
 
 	static permissionNumberToFlag(num) {
 		const arr = [];
-		for (const key of Object.keys(Discord.Permissions.FLAGS)) {
-			if (num & Discord.Permissions.FLAGS[key]) {
+		for (const key of Object.keys(Permissions.FLAGS)) {
+			if (num & Permissions.FLAGS[key]) {
 				arr.push(key);
 			}
 		}

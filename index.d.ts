@@ -4,14 +4,14 @@ import Discord, { Attachment, FileOptions } from 'discord.js'
 import sqlite3 from 'sqlite3'
 
 export  class Client extends Discord.Client{
-    constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean, options?:Object});
-    protected prefix:Array<String>
+    constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean});
+    protected prefixes:Array<String>
     protected ownerID:String
     protected events:_CustomEvents
     public loadCommands(directory:String):void
     public loadEvents(directory:String):void
     public reloadFile(path:String):void
-  
+    
 } 
 
 export  class Command{
