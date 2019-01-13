@@ -26,7 +26,7 @@ client.login('token')
 const liberch=require('liberch');
 class SayCommand  extends liberch.Command{
   constructor(){
-    super('say',['s'])
+    super({name:'say',alias:['s']})
   }
   execute(client,message,args){
     message.delete()
