@@ -20,6 +20,22 @@ commandInvalid | member:Member, command:String
 
 # Commands
 
-Method | takes
--------|------
+Method | arguments
+-------|----------
 execute | client:Client,message:Message, args:Array[arguments]
+
+# Cooldown
+
+Method | arguments | returns
+-------|-----------|--------
+add | value:any | none
+isOnCooldown | none | none
+remove | value:any | none
+removeAfter | value:any, time:number | none
+
+# FileWatch
+
+Method | arguments | returns
+-------|-----------|--------
+watchDir | directory:String (path) | none
+watchFile | filename:String (path) | none
