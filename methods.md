@@ -1,7 +1,7 @@
 # Client
 
-Method || return type
---------------------
+Method | return type
+-------|------------
 reloadFile | none
 loadCommands | none
 loadEvents | none
