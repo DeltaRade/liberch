@@ -18,4 +18,8 @@ commandInvalid | member:Member, command:String
 
 *note: Custom Events are accessible via the events property
 
-#
+# Commands
+
+Method | takes
+-------|------
+execute | client:Client,message:Message, args:Array[arguments]
