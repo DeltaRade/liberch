@@ -17,3 +17,5 @@ commandError | error:Error
 commandInvalid | member:Member, command:String
 
 *note: Custom Events are accessible via the events property
+
+#
