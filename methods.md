@@ -39,3 +39,8 @@ Method | arguments | returns
 -------|-----------|--------
 watchDir | directory:String (path) | none
 watchFile | filename:String (path) | none
+
+Event | arguments
+------|----------
+changed | event:String, file:String
+dirChanged | event:String, directory:String, file:String
