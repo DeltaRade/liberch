@@ -52,9 +52,9 @@ class Client extends Discord.Client {
 	}
 
 	reloadCommand(path) {
-		// ../../../
 		const command = require(peth.resolve(`${path}`));
-		if(command.name) {
+		// console.log(command.prototype.execute);
+		if(command.prototype.execute) {
 			this._commandhandler.commands.delete(new command().name);
 			setTimeout(() => {
 				this._commandhandler.commands.set(command.name, command);
