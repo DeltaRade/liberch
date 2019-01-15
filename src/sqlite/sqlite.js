@@ -24,7 +24,8 @@ class SQLite3 extends events.EventEmitter {
 	}
 
 	insert(tablename, columns = [], values = []) {
-		this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
+		const plc = values.map(val=>'(?)').join(',');
+		this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ${plc}`, values, (err)=>{
 			if(err) {
 				this.emit('error', err);
 			}
