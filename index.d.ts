@@ -63,7 +63,7 @@ export  class ReactionPrompt{
 }
 
 export  class SQLite3 {
-    constructor(client:Client,filename:String)
+    constructor(filename:String)
     protected database:sqlite3.Database
 
     public createTable(tablename:String,values:[]):void

@@ -1,9 +1,8 @@
 const sqlite3 = require('sqlite3');
 const events = require('events');
 class SQLite3 extends events.EventEmitter {
-	constructor(client, filename) {
+	constructor(filename) {
 		super();
-		this._client = client;
 		this._filename = filename;
 		this.database = new sqlite3.Database(this._filename, (err)=>{
 			if(err) {
