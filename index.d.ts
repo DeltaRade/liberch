@@ -10,7 +10,7 @@ export  class Client extends Discord.Client{
     protected events:_CustomEvents
     public loadCommands(directory:String):void
     public loadEvents(directory:String):void
-    public reloadFile(path:String):void
+    public reloadCommand(path:String):void
     
 } 
 

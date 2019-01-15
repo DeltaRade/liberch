@@ -50,33 +50,23 @@ class Client extends Discord.Client {
 	loadEvents(directory) {
 		this._eventhandler.init(directory);
 	}
-	reloadFile(path) {
+	reloadCommand(path) {
 		// ../../../
 		const command = require(peth.resolve(`${path}`));
-		if(typeof command == 'function') {
 
-			if(new command().name) {
-				this._commandhandler.commands.delete(new command().name);
-				setTimeout(() => {
-					this._commandhandler.commands.set(command.name, command);
-				}, 100);
-				delete require.cache[require.resolve(peth.resolve(`${path}`))];
+		this._commandhandler.commands.delete(new command().name);
+		setTimeout(() => {
+			this._commandhandler.commands.set(command.name, command);
+		}, 100);
+		delete require.cache[require.resolve(peth.resolve(`${path}`))];
 
-				const nCommand = require(peth.resolve(`${path}`));
-				setTimeout(() => {
-					const x = new nCommand();
-					this._commandhandler.commands.set(x.name, x);
-				}, 100);
+		const nCommand = require(peth.resolve(`${path}`));
+		setTimeout(() => {
+			const x = new nCommand();
+			this._commandhandler.commands.set(x.name, x);
+		}, 100);
 
-			}
-			else{
-				delete require.cache[require.resolve(peth.resolve(`${path}`))];
-			}
-
-		}
-		else{
-			delete require.cache[require.resolve(peth.resolve(`${path}`))];
-		}
 	}
+
 }
 module.exports = Client;
