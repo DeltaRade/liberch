@@ -62,13 +62,13 @@ export  class ReactionPrompt{
     public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
 }
 
-export  class SQLite3 {
+export class SQLite3 {
     constructor(filename:String)
     protected database:sqlite3.Database
 
     public createTable(tablename:String,values:[]):void
     public insert(tablename:String,columns:[],values:[]):void
-    public get(tablename:string,column:String,value:String,callback:(row:[])=>void):void
+    public get(tablename:string,column:String,value:String):Promise<Array<any>>
     public close():void
     public on(event:'connected',listener:()=>void):this
     public on(event:'error',listener:(error:Error)=>void):this

@@ -9,7 +9,9 @@ class SQLite3 extends events.EventEmitter {
 				this.emit('error', err);
 			}
 			else{
-				this.emit('connected');
+				process.nextTick(()=>{
+					this.emit('connected');
+				});
 			}
 		});
 
@@ -18,7 +20,9 @@ class SQLite3 extends events.EventEmitter {
 	createTable(tablename, values = []) {
 		this.database.run(`CREATE TABLE IF NOT EXISTS ${tablename} (${values.join(',')})`, (thisres, err)=>{
 			if(err) {
-				this.emit('error', err);
+				process.nextTick(()=>{
+					this.emit('error', err);
+				});
 			}
 		});
 	}
@@ -27,20 +31,25 @@ class SQLite3 extends events.EventEmitter {
 		const plc = values.map((val)=>'(?)').join(',');
 		this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
 			if(err) {
-				this.emit('error', err);
+				process.nextTick(()=>{
+					this.emit('error', err);
+				});
 			}
 
 		});
 	}
 
-	get(tablename, column, value, callback) {
-		this.database.get(`SELECT * FROM ${tablename} WHERE ${column}='${value}'`, (err, row)=>{
-			if(err) {			// * || column
-				this.emit('error', err);
-			}
-			else{
-				callback(row);
-			}
+	get(tablename, column, value) {
+		return new Promise((resolve, reject)=>{
+			this.database.get(`SELECT * FROM ${tablename} WHERE ${column}='${value}'`, (err, row)=>{
+				if(err) {			// * || column
+					this.emit('error', err);
+					reject(err);
+				}
+				else{
+					resolve(row);
+				}
+			});
 		});
 	}
 
@@ -53,15 +62,14 @@ class SQLite3 extends events.EventEmitter {
 	}
 
 }
-// const x = new SQLite3('test.sqlite');
-// x.on('error', (error)=>console.log(error));
-// x.createTable('settings', ['guild', 'welcomemsg']);
-// const s = 12312;
-// x.insert('settings', ['guild', 'welcomemsg'], [10, 'oof']);
-// x.get('settings', 'guild', 10, (ver)=>{
-//	console.log(ver);
-// });
-// x.close();
-
+/* const x = new SQLite3('test.sqlite');
+x.on('error', (error)=>console.log(error));
+x.createTable('settings', ['guild', 'welcomemsg']);
+const s = 12312;
+x.insert('settings', ['guild', 'welcomemsg'], [10, 'oof']);
+x.get('settings', 'guild', 10)
+	.then((b)=>console.log(b));
+x.close();
+*/
 // test code
 module.exports = SQLite3;
