@@ -65,7 +65,7 @@ class Client extends Discord.Client {
 			setTimeout(() => {
 				const x = new nCommand();
 				this._commandhandler.commands.set(x.name, x);
-			}, 500);
+			}, 1000);
 
 		}
 	}

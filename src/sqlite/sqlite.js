@@ -34,7 +34,7 @@ class SQLite3 extends events.EventEmitter {
 	}
 
 	get(tablename, column, value, callback) {
-		this.database.get(`SELECT * FROM ${tablename} WHERE ${column}='${value}'`, (err, row)=>{
+		this.database.get(`SELECT * FROM ${tablename} WHERE ${column}=${value}`, (err, row)=>{
 			if(err) {			// * || column
 				this.emit('error', err);
 			}
