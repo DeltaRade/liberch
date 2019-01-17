@@ -28,7 +28,6 @@ class SQLite3 extends events.EventEmitter {
 	}
 
 	insert(tablename, columns = [], values = []) {
-		const plc = values.map((val)=>'(?)').join(',');
 		this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
 			if(err) {
 				process.nextTick(()=>{
@@ -39,7 +38,7 @@ class SQLite3 extends events.EventEmitter {
 		});
 	}
 
-	get(tablename, column, value) {
+	async get(tablename, column, value) {
 		return new Promise((resolve, reject)=>{
 			this.database.get(`SELECT * FROM ${tablename} WHERE ${column}='${value}'`, (err, row)=>{
 				if(err) {			// * || column
@@ -53,14 +52,30 @@ class SQLite3 extends events.EventEmitter {
 		});
 	}
 
+	update(table, column, value, rowIdentifier, rowValue) {
+		return new Promise((resolve, reject)=>{
+			this.database.run(`UPDATE ${table} SET ${column}='${value}' WHERE ${rowIdentifier}='${rowValue}'`, (err)=>{
+				if(err) {
+					reject(err);
+				}
+				else{
+					resolve();
+				}
+			});
+
+		});
+
+	}
 	close() {
-		this.database.close(err=>{
-			if(err) {
-				this.emit('error', err);
-			}
+		return new Promise((res, rej)=>{
+			this.database.close(err=>{
+				if(err) {
+					this.emit('error', err);
+					rej(err);
+				}
+			});
 		});
 	}
-
 }
 /* const x = new SQLite3('test.sqlite');
 x.on('error', (error)=>console.log(error));

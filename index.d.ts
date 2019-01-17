@@ -68,8 +68,9 @@ export class SQLite3 {
 
     public createTable(tablename:String,values:[]):void
     public insert(tablename:String,columns:[],values:[]):void
-    public get(tablename:string,column:String,value:String):Promise<Array<any>>
-    public close():void
+    public get(tablename:string,column:String,value:String):Promise<Object>
+    public update(tablename:String,column:String,value:any,rowIdentifier:String,rowValue:any):Promise<void>
+    public close():Promise<void>
     public on(event:'connected',listener:()=>void):this
     public on(event:'error',listener:(error:Error)=>void):this
     
