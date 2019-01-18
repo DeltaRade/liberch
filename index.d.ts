@@ -67,7 +67,8 @@ export class SQLite3 {
     protected database:sqlite3.Database
 
     public createTable(tablename:String,values:[]):void
-    public insert(tablename:String,columns:[],values:[]):void
+    public insertReplace(tablename:String,columns:[],values:[]):Promise<void>
+    public insertIgnore(tablename:String,columns:[],values:[]):Promise<void>
     public get(tablename:string,column:String,value:String):Promise<Object>
     public update(tablename:String,column:String,value:any,rowIdentifier:String,rowValue:any):Promise<void>
     public close():Promise<void>

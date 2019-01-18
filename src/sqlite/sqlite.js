@@ -27,14 +27,37 @@ class SQLite3 extends events.EventEmitter {
 		});
 	}
 
-	insert(tablename, columns = [], values = []) {
-		this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
-			if(err) {
-				process.nextTick(()=>{
-					this.emit('error', err);
-				});
-			}
+	insertReplace(tablename, columns = [], values = []) {
+		return new Promise((res, rej)=>{
+			this.database.run(`INSERT OR REPLACE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
+				if(err) {
+					process.nextTick(()=>{
+						this.emit('error', err);
+						rej(err);
+					});
+				}
+				else{
+					res();
+				}
 
+			});
+		});
+	}
+
+	insertIgnore(tablename, columns = [], values = []) {
+		return new Promise((res, rej)=>{
+			this.database.run(`INSERT OR IGNORE INTO ${tablename} (${columns.join(',')}) VALUES ('${values.join('\',\'')}')`, (err)=>{
+				if(err) {
+					process.nextTick(()=>{
+						this.emit('error', err);
+						rej(err);
+					});
+				}
+				else{
+					res();
+				}
+
+			});
 		});
 	}
 
