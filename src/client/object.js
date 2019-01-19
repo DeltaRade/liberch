@@ -57,7 +57,7 @@ class Client extends Discord.Client {
 		if(command.prototype.execute) {
 			this._commandhandler.commands.delete(new command().name);
 			setTimeout(() => {
-				this._commandhandler.commands.set(command.name, command);
+				// this._commandhandler.commands.set(command.name, command);
 			}, 100);
 			delete require.cache[require.resolve(peth.resolve(`${path}`))];
 
