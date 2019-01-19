@@ -96,6 +96,9 @@ class SQLite3 extends events.EventEmitter {
 					this.emit('error', err);
 					rej(err);
 				}
+				else{
+					res();
+				}
 			});
 		});
 	}
