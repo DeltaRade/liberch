@@ -10,7 +10,7 @@ class Client extends Discord.Client {
 		this.ownerID = options.ownerID;
 		this.events = new EventEmit();
 
-		this.prefixes = options.prefixes;
+		this.prefixes = options.prefixes.map(v=>`\\${v}`);
 		this._commandhandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
