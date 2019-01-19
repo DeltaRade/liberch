@@ -56,16 +56,12 @@ class Client extends Discord.Client {
 		// console.log(command.prototype.execute);
 		if(command.prototype.execute) {
 			this._commandhandler.commands.delete(new command().name);
-			setTimeout(() => {
-				// this._commandhandler.commands.set(command.name, command);
-			}, 100);
 			delete require.cache[require.resolve(peth.resolve(`${path}`))];
 
 			const nCommand = require(peth.resolve(`${path}`));
-			setTimeout(() => {
-				const x = new nCommand();
-				this._commandhandler.commands.set(x.name, x);
-			}, 1000);
+
+			const x = new nCommand();
+			this._commandhandler.commands.set(x.name, x);
 
 		}
 	}
