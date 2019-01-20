@@ -1,5 +1,5 @@
 # liberch
-It is A framework for Discord.js
+It is a framework for Discord.js
 
 **Features:**
   * **command and event handler**
@@ -35,3 +35,5 @@ class SayCommand  extends liberch.Command{
  }
  module.exports=KickCommand
  ```
+ 
+ https://github.com/DeltaRade/Anzeo
