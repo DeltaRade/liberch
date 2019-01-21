@@ -35,5 +35,5 @@ class SayCommand  extends liberch.Command{
  }
  module.exports=KickCommand
  ```
- 
- https://github.com/DeltaRade/Anzeo
+ # links
+ **example bot** https://github.com/DeltaRade/Anzeo
