@@ -5,6 +5,7 @@ class TextPrompt extends events.EventEmitter {
 		this.client = client;
 		this.collector;
 		this.time;
+		this.lastCollected;
 	}
 	create(message, msg, options = { time:30, maxprocess:0, maxcollect:0, filter:{ authorOnly:false } }) {
 		message.channel.send(msg);
@@ -14,7 +15,10 @@ class TextPrompt extends events.EventEmitter {
 		option['maxMatches'] = option.maxcollect;
 		const filter = (m)=>!m.author.bot;
 		this.collector = message.channel.createMessageCollector(filter, option);
-		this.collector.on('collect', (m)=>{this.emit('collect', m);});
+		this.collector.on('collect', (m)=>{
+			this.lastCollected = m;
+			this.emit('collect', m);
+		});
 		this.collector.on('end', (collected)=>{this.emit('end', collected);});
 	}
 
@@ -25,6 +29,7 @@ class ReactionPrompt extends events.EventEmitter {
 		super();
 		this.client = client;
 		this.time;
+		this.lastCollected;
 	}
 	async create(message, msg, options = { emojisToCollect:[], filterUserID:[], time:30, maxEmojis:undefined, maxUsers:undefined }) {
 		const x = await message.channel.send(msg);
@@ -39,6 +44,7 @@ class ReactionPrompt extends events.EventEmitter {
 		const filter = (reaction, user)=>(options.emojisToCollect.includes(reaction.emoji.name) || options.emojisToCollect.includes(reaction.emoji.id)) && !user.bot;
 		const cll = x.createReactionCollector(filter, option);
 		cll.on('collect', (r)=>{
+			this.lastCollected = r;
 			this.emit('collect', r);
 		});
 		cll.on('end', (collected)=>{

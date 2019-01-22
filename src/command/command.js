@@ -1,3 +1,5 @@
+const Client = require('../client/object');
+const { Message } = require('discord.js');
 class Command {
 	constructor(options = { name:undefined, alias: [] }) {
 		if(options.name === undefined) {
@@ -8,8 +10,13 @@ class Command {
 		this.alias = options.alias;
 	}
 
-
-	execute() {
+	/**
+ *
+ * @param {Client} client
+ * @param {Message} message
+ * @param {Array} args
+ */
+	execute(client, message, args) {
 		throw new Error('NOT_IMPLEMENTED');
 	}
 }

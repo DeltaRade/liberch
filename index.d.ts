@@ -1,6 +1,6 @@
 declare module 'liberch' {
 import EventEmitter from 'events'
-import Discord, { Attachment, FileOptions } from 'discord.js'
+import Discord, { Attachment, FileOptions, Message } from 'discord.js'
 import sqlite3 from 'sqlite3'
 
 export  class Client extends Discord.Client{
@@ -48,6 +48,7 @@ export  class TextPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
+    protected lastCollected:Discord.Message
     public create(message:Discord.Message, msg:String, options:{ time:Number, maxprocess:Number, maxcollect:Number }):void
     public on(event:'collect',listener:(message:Discord.Message)=>void):this
     public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
@@ -57,6 +58,7 @@ export  class ReactionPrompt{
     constructor(client:Discord.Client);
     protected collector:Discord.MessageCollector
     protected time:number
+    protected lastCollected:Discord.MessageReaction
     public create(message:Discord.Message, msg:String, options:{ time:Number,emojisToCollect:[], filterID:String, maxprocess:Number, maxcollect:Number }):void
     public on(event:'collect',listener:(reaction:Discord.MessageReaction)=>void):this
     public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
