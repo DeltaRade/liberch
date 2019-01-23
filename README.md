@@ -33,7 +33,7 @@ class SayCommand  extends liberch.Command{
     message.channel.send(args.join(' '))
   }
  }
- module.exports=KickCommand
+ module.exports=SayCommand
  ```
  # links
  **example bot** https://github.com/DeltaRade/Anzeo
