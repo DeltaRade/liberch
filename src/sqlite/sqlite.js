@@ -18,12 +18,18 @@ class SQLite3 extends events.EventEmitter {
 	}
 
 	createTable(tablename, values = []) {
-		this.database.run(`CREATE TABLE IF NOT EXISTS ${tablename} (${values.join(',')})`, (thisres, err)=>{
-			if(err) {
-				process.nextTick(()=>{
-					this.emit('error', err);
-				});
-			}
+		return new Promise((res, rej)=>{
+			this.database.run(`CREATE TABLE IF NOT EXISTS ${tablename} (${values.join(',')})`, (thisres, err)=>{
+				if(err) {
+					rej(err);
+					process.nextTick(()=>{
+						this.emit('error', err);
+					});
+				}
+				else{
+					res();
+				}
+			});
 		});
 	}
 

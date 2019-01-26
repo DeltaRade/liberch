@@ -2,7 +2,7 @@ declare module 'liberch' {
 import EventEmitter from 'events'
 import Discord, { Attachment, FileOptions, Message } from 'discord.js'
 import sqlite3 from 'sqlite3'
-
+import pg from 'pg'
 export  class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean});
     protected prefixes:Array<String>
@@ -66,11 +66,20 @@ export  class ReactionPrompt{
     public on(event:'end',listener:(collection:Discord.Collection<any,any>)=>void):this
 }
 
+export class PostgreSQL{
+    constructor(options = { user:'', password:'', database:'', port:0, connectionString:'', ssl:any, types:any, statement_timeout:0 })
+    protected client:pg.Client
+    public connect():Promise<void>
+    public end():Promise<void>
+    public query(query:String):Promise<any>
+    public createTable(tablename:String,columns:Array<String>)
+}
+
 export class SQLite3 {
     constructor(filename:String)
     protected database:sqlite3.Database
 
-    public createTable(tablename:String,values:[]):void
+    public createTable(tablename:String,values:[]):Promise<void>
     public insertReplace(tablename:String,columns:[],values:[]):Promise<void>
     public insertIgnore(tablename:String,columns:[],values:[]):Promise<void>
     public get(tablename:string,column:String,value:String):Promise<Object>
