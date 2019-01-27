@@ -5,6 +5,7 @@ const Utils = require('./src/utils/utils');
 const FileWatch = require('./src/filewatch/filewatch');
 const SQLite3 = require('./src/sqlite/sqlite');
 const Cooldown = require('./src/cooldowns/cooldown');
+const PostgreSQL=require('./src/postgesql/postgres')
 module.exports = {
 	Client:Client,
 	Command:Command,
@@ -13,5 +14,6 @@ module.exports = {
 	ReactionPrompt:prompt.ReactionPrompt,
 	Utils:Utils,
 	FileWatch:FileWatch,
+	PostgreSQL:PostgreSQL,
 	SQLite3:SQLite3,
 };
