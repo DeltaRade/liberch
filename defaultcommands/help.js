@@ -7,7 +7,12 @@ class HelpCommand extends Command {
 	execute(client, message, args) {
 		const data = [];
 		const { commands } = client;
-		let prefix = client.prefixes.map(x=>x.slice(1, 3));
+		let prefix = client.prefixes.map(x=>{
+			if(x.contains('\\')) {
+				return x.slice(1, 3);
+			}
+			return x;
+		});
 		prefix = prefix.join(' or ');
 		prefix = prefix.replace(`<@!?${client.id}>`, 'mention');
 
