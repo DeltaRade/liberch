@@ -9,7 +9,7 @@ class HelpCommand extends Command {
 		const { commands } = client;
 		let prefix = client.prefixes.map(x=>x.slice(1, 3));
 		prefix = prefix.join(' or ');
-		prefix = prefix.replace(`<@!?${client.id}>`, `${client.user.username}`);
+		prefix = prefix.replace(`<@!?${client.id}>`, 'mention');
 
 		if(!args.length) {
 			data.push('```Here\'s a list of all my commands```');
