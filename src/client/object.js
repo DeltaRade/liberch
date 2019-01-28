@@ -24,10 +24,7 @@ class Client extends Discord.Client {
 			if(this._mentionAsPrefix) {
 				this.prefixes.push(`<@!?${message.client.user.id}>`);
 			}
-			if(this._helpcommand) {
-				const help = require(this._helpcommand);
-				this._commandhandler.commands.add(help.name, help);
-			}
+
 			const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
 			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
