@@ -15,16 +15,16 @@ class Client extends Discord.Client {
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
 		this.commands = this._commandhandler.commands;
-	}
-
-	loadCommands(directory) {
-		this._commandhandler.init(directory);
 
 		this.on('ready', ()=>{
 			if(this._mentionAsPrefix) {
 				this.prefixes.push(`<@!?${this.user.id}>`);
 			}
 		});
+	}
+
+	loadCommands(directory) {
+		this._commandhandler.init(directory);
 
 		this.on('message', (message)=>{
 
