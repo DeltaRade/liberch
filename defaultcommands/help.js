@@ -8,7 +8,7 @@ class HelpCommand extends Command {
 		const data = [];
 		const { commands } = client;
 		let prefix = client.prefixes.map(x=>{
-			if(x.contains('\\')) {
+			if(x.includes('\\')) {
 				return x.slice(1, 3);
 			}
 			return x;
