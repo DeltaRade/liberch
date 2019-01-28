@@ -10,8 +10,9 @@ class CommandHandler {
 	init(directory) {
 		const commandFiles = fs.readdirSync(`${directory}`).filter(file=>file.endsWith('.js'));
 		if(this.client._helpcommand) {
-			const help = new require(this.client._helpcommand);
-			this.commands.set(help.name, help);
+			const help = require(this.client._helpcommand);
+			const cmd = new help();
+			this.commands.set(cmd.name, cmd);
 		}
 		for (const file of commandFiles) {
 			// const f = require('../../../commands/test');
