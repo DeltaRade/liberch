@@ -19,11 +19,10 @@ class Client extends Discord.Client {
 
 	loadCommands(directory) {
 		this._commandhandler.init(directory);
-
+		if(this._mentionAsPrefix) {
+			this.prefixes.push(`<@!?${this.user.id}>`);
+		}
 		this.on('message', (message)=>{
-			if(this._mentionAsPrefix) {
-				this.prefixes.push(`<@!?${message.client.user.id}>`);
-			}
 
 			const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
 			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
