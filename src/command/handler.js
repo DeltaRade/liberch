@@ -12,7 +12,7 @@ class CommandHandler {
 		for (const file of commandFiles) {
 			// const f = require('../../../commands/test');
 			// console.log(f);
-			if(this.clientclient._helpcommand) {
+			if(this.client._helpcommand) {
 				const help = require(this.client._helpcommand);
 				this.commands.set(help.name, help);
 			}
