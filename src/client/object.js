@@ -9,7 +9,7 @@ class Client extends Discord.Client {
 
 		this.ownerID = options.ownerID;
 		this.events = new EventEmit();
-		this._helpcommand = require('../../defaultcommands/');
+		this._helpcommand = '../../defaultcommands/help';
 		this.prefixes = options.prefixes.map(v=>`\\${v}`);
 		this._commandhandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
@@ -75,4 +75,5 @@ class Client extends Discord.Client {
 	}
 
 }
+const x = new Client();
 module.exports = Client;
