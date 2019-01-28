@@ -5,17 +5,18 @@ import sqlite3 from 'sqlite3'
 import pg from 'pg'
 export  class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean});
+    protected commands:{}
     protected prefixes:Array<String>
     protected ownerID:String
     protected events:_CustomEvents
+    public disableDefaultHelpCommand():void
     public loadCommands(directory:String):void
     public loadEvents(directory:String):void
     public reloadCommand(path:String):void
-    
 } 
 
 export  class Command{
-    constructor(options:{name:String,description:String,alias:Array<String>})
+    constructor(options:{name:String,description:String,usage:String,alias:Array<String>})
     protected name:String;
     protected alias:Array<String>
     protected description:String;

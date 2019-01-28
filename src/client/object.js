@@ -9,11 +9,12 @@ class Client extends Discord.Client {
 
 		this.ownerID = options.ownerID;
 		this.events = new EventEmit();
-
+		this._helpcommand = require('../../defaultcommands/');
 		this.prefixes = options.prefixes.map(v=>`\\${v}`);
 		this._commandhandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
+		this.commands = this._commandhandler.commands;
 	}
 
 	loadCommands(directory) {
@@ -23,7 +24,10 @@ class Client extends Discord.Client {
 			if(this._mentionAsPrefix) {
 				this.prefixes.push(`<@!?${message.client.user.id}>`);
 			}
-
+			if(this._helpcommand) {
+				const help = require(this._helpcommand);
+				this._commandhandler.commands.add(help.name, help);
+			}
 			const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
 			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
@@ -64,6 +68,10 @@ class Client extends Discord.Client {
 			this._commandhandler.commands.set(x.name, x);
 
 		}
+	}
+
+	disableDefaultHelpCommand() {
+		this._helpcommand = undefined;
 	}
 
 }
