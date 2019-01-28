@@ -75,5 +75,4 @@ class Client extends Discord.Client {
 	}
 
 }
-const x = new Client();
 module.exports = Client;
