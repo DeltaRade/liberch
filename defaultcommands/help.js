@@ -11,9 +11,8 @@ class HelpCommand extends Command {
 			if(x.includes('\\')) {
 				return x.slice(1, 3);
 			}
-			return `@${client.user.tag}`;
+			return `@${client.user.username} `;
 		});
-		console.log(prefix);
 		prefix = prefix.join(' or ');
 
 
