@@ -1,7 +1,7 @@
 const Client = require('../client/object');
 const { Message } = require('discord.js');
 class Command {
-	constructor(options = { name:undefined, description:'', usage:'', alias: [] }) {
+	constructor(options = { name:undefined, description:undefined, usage:undefined, alias: [] }) {
 		if(options.name === undefined) {
 			throw new Error('NAME_NOT_DEFINED');
 		}
@@ -10,6 +10,7 @@ class Command {
 		this.alias = options.alias;
 		this.description = options.description;
 		this.alias = options.alias;
+		this.usage = options.usage;
 	}
 
 	/**

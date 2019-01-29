@@ -20,6 +20,7 @@ export  class Command{
     protected name:String;
     protected alias:Array<String>
     protected description:String;
+    protected usage:String
     public execute(client:Client,message:Discord.Message, args:Array<String>):any;
 }
 
