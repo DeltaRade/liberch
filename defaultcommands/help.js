@@ -13,8 +13,9 @@ class HelpCommand extends Command {
 			}
 			return x;
 		});
+		console.log(prefix);
 		prefix = prefix.join(' or ');
-		prefix = prefix.replace(`<@!?${client.id}>`, 'mention');
+		prefix = prefix.replace(`<@!?${client.id}>`, `@${client.user.tag}`);
 
 		if(!args.length) {
 			data.push('```Here\'s a list of all my commands```');
