@@ -16,7 +16,7 @@ class HelpCommand extends Command {
 		console.log(prefix);
 		prefix = prefix.join(' or ');
 		prefix = prefix.replace(`<@!?${client.id}>`, `@${client.user.tag}`);
-		console.log(prefix.replace(`<@!?${client.id}>`, `@${client.user.tag}`);)
+		console.log(prefix.replace(`<@!?${client.id}>`, `@${client.user.tag}`));
 
 		if(!args.length) {
 			data.push('```Here\'s a list of all my commands```');
