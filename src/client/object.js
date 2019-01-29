@@ -15,19 +15,16 @@ class Client extends Discord.Client {
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
 		this.commands = this._commandhandler.commands;
-
-		this.on('ready', ()=>{
-			if(this._mentionAsPrefix) {
-				this.prefixes.push(`<@!?${this.user.id}>`);
-			}
-		});
 	}
 
 	loadCommands(directory) {
 		this._commandhandler.init(directory);
 
 		this.on('message', (message)=>{
-
+			if(this._mentionAsPrefix) {
+				this.prefixes.push(`<@!?${this.user.id}>`);
+				this._mentionAsPrefix = undefined;
+			}
 			const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
 			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
