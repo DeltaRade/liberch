@@ -11,12 +11,11 @@ class HelpCommand extends Command {
 			if(x.includes('\\')) {
 				return x.slice(1, 3);
 			}
-			return x;
+			return `@${client.user.tag}`;
 		});
 		console.log(prefix);
 		prefix = prefix.join(' or ');
-		prefix = prefix.replace(`<@!?${client.id}>`, `@${client.user.tag}`);
-		console.log(prefix.replace(`<@!?${client.id}>`, `@${client.user.tag}`));
+
 
 		if(!args.length) {
 			data.push('```Here\'s a list of all my commands```');
