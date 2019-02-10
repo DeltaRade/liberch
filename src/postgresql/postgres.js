@@ -15,7 +15,7 @@ class PostgreSQL {
 		return this.client.query(`GET * FROM ${table} WHERE ${column}=${value}`);
 	}
 
-	async inseroOrUPdate(table, columns, values) {
+	async insertOrUPdate(table, columns, values) {
 		return this.client.query(`UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')})'`);
 	}
 
