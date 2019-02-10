@@ -19,12 +19,11 @@ class PostgreSQL {
 	}
 
 	async upsert(table, columns, values) {
-		return this.client.query(`UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')})'`);
+		return this.client.query(`UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}')`);
 	}
 
 	async query(query) {
 		return this.client.query(query);
 	}
 }
-
 module.exports = PostgreSQL;
