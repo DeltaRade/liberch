@@ -74,7 +74,7 @@ export class PostgreSQL{
     public connect():Promise<void>
     public end():Promise<void>
     public get(table:String,column:String,value:any):Promise<pg.QueryResult>
-    public insertOrUpdate(table:String,columns:String[],values:any[])
+    public upsert(table:String,columns:String[],values:any[])
     public query(query:String):Promise<any>
     //public createTable(tablename:String,columns:Array<String>)
 }
