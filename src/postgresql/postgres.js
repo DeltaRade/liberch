@@ -15,7 +15,7 @@ class PostgreSQL {
 	}
 
 	async get(table, column, value) {
-		return this.client.query(`GET * FROM ${table} WHERE ${column}=${value}`);
+		return this.client.query(`SELECT * FROM ${table} WHERE ${column}=${value}`);
 	}
 
 	async upsert(table, columns, values) {
