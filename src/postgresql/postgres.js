@@ -11,10 +11,17 @@ class PostgreSQL {
 		return this.client.end();
 	}
 
+	async get(table, column, value) {
+		return this.client.query(`GET * FROM ${table} WHERE ${column}=${value}`);
+	}
+
+	async inseroOrUPdate(table, columns, values) {
+		return this.client.query(`UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')})'`);
+	}
+
 	async query(query) {
 		return this.client.query(query);
 	}
-
 }
 
 module.exports = PostgreSQL;

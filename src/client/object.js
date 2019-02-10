@@ -55,7 +55,7 @@ class Client extends Discord.Client {
 	reloadCommand(path) {
 		const command = require(peth.resolve(`${path}`));
 		// console.log(command.prototype.execute);
-		if(command.prototype.execute) {
+		if(typeof command.prototype.execute === 'function') {
 			this._commandhandler.commands.delete(new command().name);
 			delete require.cache[require.resolve(peth.resolve(`${path}`))];
 

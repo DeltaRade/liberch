@@ -51,5 +51,10 @@ class Utils {
 	static msToTime(time) {
 		return ms(time, { long:true });
 	}
+
+	static containsInvite(string) {
+		return /(https?(:\/\/)?)?(www\.)?(discord\.(gg|io|me)|discordapp\.com\/invite)\/.+[a-z]/.test(string);
+		// /^(https?:\/\/)?(www\.)?(discord\.(gg|io|me)|discordapp\.com\/invite)\/.+[a-z]/.test(string);
+	}
 }
 module.exports = Utils;

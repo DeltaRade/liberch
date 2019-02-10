@@ -73,8 +73,10 @@ export class PostgreSQL{
     protected client:pg.Client
     public connect():Promise<void>
     public end():Promise<void>
+    public get(table:String,column:String,value:any):Promise<pg.QueryResult>
+    public insertOrUpdate(table:String,columns:String[],values:any[])
     public query(query:String):Promise<any>
-    public createTable(tablename:String,columns:Array<String>)
+    //public createTable(tablename:String,columns:Array<String>)
 }
 
 export class SQLite3 {
@@ -94,6 +96,7 @@ export class SQLite3 {
 
 export  class Utils{
 
+    public static containsInvite(string:String):Boolean
     public static findMembersMatch(guild:Discord.Guild, name:String):Array<Discord.GuildMember>
     public static findChannelsMatch(guild:Discord.Guild, channelName:String):Array<Discord.Channel>
     public static findEmojisMatch(guild:Discord.Guild, emojiName:String):Array<Discord.Emoji>
