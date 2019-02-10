@@ -7,6 +7,9 @@ class PostgreSQL {
 		return this.client.connect();
 	}
 
+	async createTable(table, columns) {
+		return this.client.query(`CREATE TABLE IF NOT EXISTS ${table}(${columns.join(',')})`);
+	}
 	async end() {
 		return this.client.end();
 	}
