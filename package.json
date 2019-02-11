@@ -1,21 +1,15 @@
 {
-  "name": "liberch",
-  "version": "1.2.0",
-  "description": "discord.js framework",
+  "name": "liberch-bot",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "discord.js",
-    "framework"
-  ],
-  "author": "DeltaRade",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.4.2",
-    "pg": "^7.8.0",
-    "sqlite3": "^4.0.4"
-  },
-  "types": "index.d.ts"
+    "liberch": "git+https://github.com/DeltaRade/d.js-framework.git"
+  }
 }
