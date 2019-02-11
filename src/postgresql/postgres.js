@@ -7,8 +7,14 @@ class PostgreSQL {
 		return this.client.connect();
 	}
 
-	async createTable(table, columns) {
-		return this.client.query(`CREATE TABLE IF NOT EXISTS ${table}(${columns.join(',')})`);
+	async createTable(table, columns, unique) {
+		const mp = columns.map(x=>{
+			if(x == unique) {
+				return x + ' text UNIQUE';
+			}
+			return x + ' text';
+		});
+		return this.client.query(`CREATE TABLE IF NOT EXISTS ${table}(${mp.join(',')})`);
 	}
 	async end() {
 		return this.client.end();
