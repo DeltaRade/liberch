@@ -76,7 +76,7 @@ export class PostgreSQL{
     public get(table:String,column:String,value:any):Promise<pg.QueryResult>
     public upsert(table:String,columns:String[],values:any[])
     public query(query:String):Promise<any>
-    //public createTable(tablename:String,columns:Array<String>)
+    public createTable(tablename:String,columns:Array<String>,unique:String):Promise<any>
 }
 
 export class SQLite3 {
