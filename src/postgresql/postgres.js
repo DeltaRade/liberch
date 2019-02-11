@@ -14,22 +14,28 @@ class PostgreSQL {
 			}
 			return x + ' text';
 		});
-		return this.client.query(`CREATE TABLE IF NOT EXISTS ${table}(${mp.join(',')})`);
+		const query = `CREATE TABLE IF NOT EXISTS ${table}(${mp.join(',')})`;
+		return this.client.query(query);
 	}
 	async end() {
 		return this.client.end();
 	}
 
 	async get(table, column, value) {
-		return this.client.query(`SELECT * FROM ${table} WHERE ${column}=${value}`);
+		const query = `SELECT * FROM ${table} WHERE ${column}=${value}`;
+		return this.client.query(query);
 	}
 
 	async upsert(table, columns, values) {
-		return this.client.query(`UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}')`);
+		const query = `UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}')`;
+		return this.client.query(query);
 	}
 
 	async query(query) {
 		return this.client.query(query);
 	}
 }
+const x = new PostgreSQL();
+x.createTable('settings', ['oof', 'demed'], 'oof');
+
 module.exports = PostgreSQL;
