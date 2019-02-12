@@ -27,7 +27,7 @@ class PostgreSQL {
 	}
 
 	async upsert(table, columns, values, constraint, columnToUpdate, valueToUpdate) {
-		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}') ON CONFLICT(${constraint}) DO UPDATE SET ${columnToUpdate} = ${valueToUpdate}`;
+		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}') ON CONFLICT(${constraint}) DO UPDATE SET ${columnToUpdate} = '${valueToUpdate}'`;
 		return this.client.query(query);
 	}
 
