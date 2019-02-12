@@ -40,7 +40,4 @@ class PostgreSQL {
 		return this.client.query(query);
 	}
 }
-const x = new PostgreSQL();
-x.createTable('settings', ['oof', 'demed'], 'oof');
-
 module.exports = PostgreSQL;
