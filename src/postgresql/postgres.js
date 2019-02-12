@@ -26,16 +26,12 @@ class PostgreSQL {
 		return this.client.query(query);
 	}
 
-	async upsert(table, columns, values,conflict=false) {
-		let txt=''
-		if(conflict){
-			txt=`ON CONFLICT(${columns[0]}) DO UPDATE SET `
-		}
-		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}')${txt}`;
+	async upsert(table, columns, values, constraint, columnToUpdate, valueToUpdate) {
+		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}') txt = ON CONFLICT(${constraint}) DO UPDATE SET ${columnToUpdate} = ${valueToUpdate}`;
 		return this.client.query(query);
 	}
 
-	async insertOrIgnore(table,columns,values){
+	async insertOrIgnore(table, columns, values) {
 		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}') ON CONFLICT DO NOTHING`;
 		return this.client.query(query);
 	}
