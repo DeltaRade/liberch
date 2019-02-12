@@ -26,8 +26,17 @@ class PostgreSQL {
 		return this.client.query(query);
 	}
 
-	async upsert(table, columns, values) {
-		const query = `UPDATE OR INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}')`;
+	async upsert(table, columns, values,conflict=false) {
+		let txt=''
+		if(conflict){
+			txt=`ON CONFLICT(${columns[0]}) DO UPDATE SET `
+		}
+		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}')${txt}`;
+		return this.client.query(query);
+	}
+
+	async insertOrIgnore(table,columns,values){
+		const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES('${values.join('\',\'')}') ON CONFLICT DO NOTHING`;
 		return this.client.query(query);
 	}
 
