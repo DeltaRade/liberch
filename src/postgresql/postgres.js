@@ -22,7 +22,7 @@ class PostgreSQL {
 	}
 
 	async get(table, column, value) {
-		const query = `SELECT * FROM ${table} WHERE ${column}=${value}`;
+		const query = `SELECT * FROM ${table} WHERE ${column}='${value}'`;
 		return this.client.query(query);
 	}
 
