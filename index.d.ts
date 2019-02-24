@@ -16,12 +16,12 @@ export  class Client extends Discord.Client{
 } 
 
 export  class Command{
-    constructor(options:{name:String,description:String,usage:String,alias:Array<String>})
+    public constructor(options:{name:String,description:String,usage:String,alias:Array<String>})
     protected name:String;
     protected alias:Array<String>
     protected description:String;
     protected usage:String
-    public execute(client:Client,message:Discord.Message, args:Array<String>):any;
+    public execute(message:Discord.Message, args:Array<String>):this;
 }
 
 export  class Cooldown{

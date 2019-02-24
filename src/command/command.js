@@ -15,11 +15,12 @@ class Command {
 
 	/**
  *
- * @param {Client} client
  * @param {Message} message
- * @param {Array} args
+ * @param {Array<String>} args
+ * @returns {this}
+ * @abstract
  */
-	execute(client, message, args) {
+	execute(message, args) {
 		throw new Error('NOT_IMPLEMENTED');
 	}
 }
