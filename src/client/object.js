@@ -11,41 +11,11 @@ class Client extends Discord.Client {
 		this.events = new EventEmit();
 		this._helpcommand = '../../defaultcommands/help';
 		this.prefixes = options.prefixes.map(v=>`\\${v}`);
-		this._commandhandler = new CommandHandler(this);
+		this.commandHandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
+		options.mentionAsPrefix?this.prefixes.push(`<@!?${this.user.id}>`):''
 		this.commands = this._commandhandler.commands;
-	}
-
-	loadCommands(directory) {
-		this._commandhandler.init(directory);
-
-		this.on('message', (message)=>{
-			if(this._mentionAsPrefix) {
-				this.prefixes.push(`<@!?${this.user.id}>`);
-				this._mentionAsPrefix = undefined;
-			}
-			const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
-			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
-			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
-
-			const args = message.content.slice(prefix.length).trim().split(/ +/g);
-			const commandName = args.shift().toLowerCase();
-			const command = this._commandhandler.commands.get(commandName) || this._commandhandler.commands.find(x=>x.alias && x.alias.includes(commandName));
-			if(!command) {return this.events.emit('commandInvalid', message.member, commandName);}
-
-			try{
-
-				command.execute(this, message, args);
-			}
-
-			catch(error) {
-				this.events.emit('commandError', error);
-			}
-
-
-		});
-
 	}
 
 	loadEvents(directory) {

@@ -3,18 +3,27 @@ import EventEmitter from 'events'
 import Discord, { Attachment, FileOptions, Message } from 'discord.js'
 import sqlite3 from 'sqlite3'
 import pg from 'pg'
-export  class Client extends Discord.Client{
+export class Client extends Discord.Client{
     constructor(options:{prefixes:[],ownerID:String,mentionAsPrefix:Boolean});
-    protected commands:{}
+    protected commandHandler:CommandHandler
     protected prefixes:Array<String>
     protected ownerID:String
-    protected events:_CustomEvents
     public disableDefaultHelpCommand():void
     public loadCommands(directory:String):void
     public loadEvents(directory:String):void
     public reloadCommand(path:String):void
-} 
 
+} 
+export class CommandHandler extends EventEmitter{
+    public constructor(client:Discord.Client);
+    protected commands:Discord.Collection
+    public load(directory:string):void
+    public exec(message:Discord.Message):void
+
+    public on(event:'commandError',listener:(error:Error)=>void):this;
+    public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
+    
+}
 export  class Command{
     public constructor(options:{name:String,description:String,usage:String,alias:Array<String>})
     protected name:String;
@@ -33,12 +42,6 @@ export  class Cooldown{
     public removeAfter(value:any,time:number):void
 }
 
-export class _CustomEvents{
-
-    public on(event:'commandError',listener:(error:Error)=>void):this;
-    public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
-    
-}
 
 export  class FileWatch{
     constructor();
