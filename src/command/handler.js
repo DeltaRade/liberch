@@ -13,11 +13,8 @@ class CommandHandler extends events.EventEmitter {
 		const commandFiles = fs.readdirSync(`${directory}`).filter(file=>file.endsWith('.js'));
 
 		for (const file of commandFiles) {
-			// const f = require('../../../commands/test');
-			// console.log(f);
 			const command = require(path.resolve(`${directory}/${file}`));
 			const obj = new command();
-			// console.log(obj);
 			this.commands.set(obj.name, obj);
 		}
 		loadDefault(this,'help')

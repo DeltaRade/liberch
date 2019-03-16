@@ -8,9 +8,8 @@ export class Client extends Discord.Client{
     protected commandHandler:CommandHandler
     protected prefixes:Array<String>
     protected ownerID:String
-    public disableDefaultHelpCommand():void
     public loadEvents(directory:String):void
-    public reloadCommand(path:String):void
+    //public reloadCommand(path:String):void
 
 } 
 export class CommandHandler {

@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
 const EventHandler = require('../events/handler');
-const peth = require('path');
 class Client extends Discord.Client {
 	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false }) {
 		super(options);
@@ -10,7 +9,7 @@ class Client extends Discord.Client {
 		this._helpcommand = '../../defaultcommands/help';
 		this.prefixes = options.prefixes.map(v=>`\\${v}`);
 		this.commandHandler = new CommandHandler(this);
-		this._eventhandler = new EventHandler(this);
+		this.eventHandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
 		this.on('ready',()=>{
 			options.mentionAsPrefix?this.prefixes.push(`<@!?${this.user.id}>`):''
@@ -18,10 +17,10 @@ class Client extends Discord.Client {
 	}
 
 	loadEvents(directory) {
-		this._eventhandler.init(directory);
+		this.eventHandler.load(directory);
 	}
 
-	reloadCommand(path) {
+	/*reloadCommand(path) {
 		const command = require(peth.resolve(`${path}`));
 		// console.log(command.prototype.execute);
 		if(typeof command.prototype.execute === 'function') {
@@ -34,11 +33,6 @@ class Client extends Discord.Client {
 			this._commandhandler.commands.set(x.name, x);
 
 		}
-	}
-
-	disableDefaultHelpCommand() {
-		this._helpcommand = undefined;
-	}
-
+	}*/
 }
 module.exports = Client;

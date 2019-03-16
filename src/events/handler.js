@@ -5,7 +5,7 @@ class EventHandler {
 		this.client = client;
 	}
 
-	init(directory) {
+	load(directory) {
 		const eventsFiles = fs.readdirSync(directory).filter(file=>file.endsWith('.js'));
 		for (const file of eventsFiles) {
 			// const f = require('../../tests/events/test');
