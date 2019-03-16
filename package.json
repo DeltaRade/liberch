@@ -1,6 +1,6 @@
 {
   "name": "liberch",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "discord.js framework",
   "main": "index.js",
   "scripts": {
