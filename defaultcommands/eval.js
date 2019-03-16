@@ -32,4 +32,4 @@ class Eval extends Command {
 	}
 }
 
-module.exports = HelpCommand;
+module.exports = Eval;
