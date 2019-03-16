@@ -12,7 +12,9 @@ class Client extends Discord.Client {
 		this.commandHandler = new CommandHandler(this);
 		this._eventhandler = new EventHandler(this);
 		this._mentionAsPrefix = options.mentionAsPrefix;
-		options.mentionAsPrefix?this.prefixes.push(`<@!?${this.user.id}>`):''
+		this.on('ready',()=>{
+			options.mentionAsPrefix?this.prefixes.push(`<@!?${this.user.id}>`):''
+		})
 	}
 
 	loadEvents(directory) {
