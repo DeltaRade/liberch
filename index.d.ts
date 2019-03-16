@@ -14,7 +14,7 @@ export class Client extends Discord.Client{
 } 
 export class CommandHandler {
     public constructor(client:Discord.Client);
-    protected commands:Discord.Collection
+    protected commands:Discord.Collection<string,Command>
     public load(directory:string):void
     public exec(message:Discord.Message):void
 
@@ -28,6 +28,7 @@ export  class Command{
     protected alias:Array<String>
     protected description:String;
     protected usage:String
+    public setExecute(fn:(message:Discord.Message,args:Array<string>)=>void):void
     public execute(message:Discord.Message, args:Array<String>):this;
 }
 

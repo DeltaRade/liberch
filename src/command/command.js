@@ -1,6 +1,8 @@
-const Client = require('../client/object');
+
 const { Message } = require('discord.js');
+
 class Command {
+
 	constructor(options = { name:undefined, description:undefined, usage:undefined, alias: [] }) {
 		if(options.name === undefined) {
 			throw new Error('NAME_NOT_DEFINED');
@@ -14,14 +16,11 @@ class Command {
 	}
 
 	/**
- *
- * @param {Message} message
- * @param {Array<String>} args
+ *@param {(message:Message,args:[])=>void} fn
  * @returns {this}
- * @abstract
  */
-	execute(message, args) {
-		throw new Error('NOT_IMPLEMENTED');
+	setExecute(fn) {
+		this.execute=fn
 	}
 }
 

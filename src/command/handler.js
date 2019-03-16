@@ -14,8 +14,7 @@ class CommandHandler extends events.EventEmitter {
 
 		for (const file of commandFiles) {
 			const command = require(path.resolve(`${directory}/${file}`));
-			const obj = new command();
-			this.commands.set(obj.name, obj);
+			this.commands.set(command.name, command);
 		}
 		loadDefault(this,'help')
 		loadDefault(this,'eval')
@@ -51,7 +50,6 @@ class CommandHandler extends events.EventEmitter {
 }
 function loadDefault(handler,def){
 	const command = require(`../../defaultcommands/${def}`);
-	const obj = new command();
-	handler.commands.set(obj.name, obj);
+	handler.commands.set(command.name, command);
 }
 module.exports = CommandHandler;
