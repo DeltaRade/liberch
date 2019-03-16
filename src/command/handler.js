@@ -11,12 +11,6 @@ class CommandHandler extends events.EventEmitter {
 	}
 	load(directory) {
 		const commandFiles = fs.readdirSync(`${directory}`).filter(file=>file.endsWith('.js'));
-		if(this.client._helpcommand) {
-			const help = require(this.client._helpcommand);
-			const cmd = new help();
-			this.commands.set(cmd.name, cmd);
-		}
-
 
 		for (const file of commandFiles) {
 			// const f = require('../../../commands/test');
@@ -26,6 +20,8 @@ class CommandHandler extends events.EventEmitter {
 			// console.log(obj);
 			this.commands.set(obj.name, obj);
 		}
+		loadDefault(this,'help')
+		loadDefault(this,'eval')
 	}
 
 	/**
@@ -40,21 +36,25 @@ class CommandHandler extends events.EventEmitter {
 		if(message.system)return;
 		if(message.author.bot)return;
 		const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
-			const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
-			if (!message.content.startsWith(prefix) || message.author.bot) {return;}
-			const args = message.content.slice(prefix.length).trim().split(/ +/g);
-			const commandName = args.shift().toLowerCase();
-			const command = this._commandhandler.commands.get(commandName) || this._commandhandler.commands.find(x=>x.alias && x.alias.includes(commandName));
-			if(!command) {
-				return this.emit('commandInvalid', message.member, commandName);
-			}
-			try{
-				command.execute(this, message, args);
-			}
-			catch(error) {
-				this.emit('commandError', error);
-			}
+		const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
+		if (!message.content.startsWith(prefix) || message.author.bot) {return;}
+		const args = message.content.slice(prefix.length).trim().split(/ +/g);
+		const commandName = args.shift().toLowerCase();
+		const command = this.commands.get(commandName) || this.commands.find(x=>x.alias && x.alias.includes(commandName));
+		if(!command) {
+			return this.emit('commandInvalid', message.member, commandName);
+		}
+		try{
+			command.execute(message, args);
+		}
+		catch(error) {
+			this.emit('commandError', error);
+		}
 	}
 }
-
+function loadDefault(handler,def){
+	const command = require(`../../defaultcommands/${def}`);
+	const obj = new command();
+	handler.commands.set(obj.name, obj);
+}
 module.exports = CommandHandler;

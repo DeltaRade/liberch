@@ -4,7 +4,7 @@ class HelpCommand extends Command {
 		super({ name:'help', description:'list all commands or info about a specific command', usage:'[command name]' });
 	}
 
-	execute(client, message, args) {
+	execute(message, args) {
 		const data = [];
 		const { commands } = client;
 		let prefix = client.prefixes.map(x=>{
