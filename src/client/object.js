@@ -7,7 +7,6 @@ class Client extends Discord.Client {
 		super(options);
 
 		this.ownerID = options.ownerID;
-		this.events = new EventEmit();
 		this._helpcommand = '../../defaultcommands/help';
 		this.prefixes = options.prefixes.map(v=>`\\${v}`);
 		this.commandHandler = new CommandHandler(this);
