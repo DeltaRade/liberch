@@ -14,6 +14,7 @@ class Eval extends Command {
      * @memberof Eval
      */
     execute(message, args) {
+        if(message.author.id!=message.client.ownerID){return message.reply('not allowed to use this command')}
         try {
             let content = args.join(' ');
             if (cblockre.test(content)) {
