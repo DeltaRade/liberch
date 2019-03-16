@@ -9,7 +9,6 @@ export class Client extends Discord.Client{
     protected prefixes:Array<String>
     protected ownerID:String
     public disableDefaultHelpCommand():void
-    public loadCommands(directory:String):void
     public loadEvents(directory:String):void
     public reloadCommand(path:String):void
 
