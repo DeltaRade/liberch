@@ -13,7 +13,7 @@ class Eval extends Command {
      * @param {*} args
      * @memberof Eval
      */
-    execute(message, args) {
+    async execute(message, args) {
         if(message.author.id!=message.client.ownerID){return message.reply('not allowed to use this command')}
         try {
             let content = args.join(' ');
