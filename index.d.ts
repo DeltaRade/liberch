@@ -13,7 +13,7 @@ export class Client extends Discord.Client{
     public reloadCommand(path:String):void
 
 } 
-export class CommandHandler extends EventEmitter{
+export class CommandHandler {
     public constructor(client:Discord.Client);
     protected commands:Discord.Collection
     public load(directory:string):void
