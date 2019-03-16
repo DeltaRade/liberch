@@ -35,7 +35,7 @@ class CommandHandler extends events.EventEmitter {
 	exec(message){
 		if(message.system)return;
 		if(message.author.bot)return;
-		const prefixMention = new RegExp(`^(${this.prefixes.join('|')})`);
+		const prefixMention = new RegExp(`^(${this.client.prefixes.join('|')})`);
 		const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
 		if (!message.content.startsWith(prefix) || message.author.bot) {return;}
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
