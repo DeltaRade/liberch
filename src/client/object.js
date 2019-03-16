@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
 const EventHandler = require('../events/handler');
-const EventEmit = require('../events/eventhandler');
 const peth = require('path');
 class Client extends Discord.Client {
 	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false }) {
