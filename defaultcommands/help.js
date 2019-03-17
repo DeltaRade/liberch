@@ -1,8 +1,8 @@
 const Command = require('../src/command/command');
 let help=new Command({ name:'help', description:'list all commands or info about a specific command', usage:'[command name]' })
 help.setExecute((message,args)=>{
-	let commands=message.client.co
-	const data = [];mmandHandler.commands
+	let commands=message.client.commandHandler.commands
+	const data = []
 	let prefix = client.prefixes.map(x=>{
 		if(x.includes('\\')) {
 			return x.slice(1, 3);
