@@ -3,7 +3,7 @@ let help=new Command({ name:'help', description:'list all commands or info about
 help.setExecute((message,args)=>{
 	let commands=message.client.commandHandler.commands
 	const data = []
-	let prefix = client.prefixes.map(x=>{
+	let prefix = message.client.prefixes.map(x=>{
 		if(x.includes('\\')) {
 			return x.slice(1, 3);
 		}
