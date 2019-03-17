@@ -1,8 +1,8 @@
 const Command = require('../src/command/command');
 
 const cblockre = /(^```js)|(```$)/g;
-let eval=new Command({name:'eval',description:'evaluates an expression',usage:'[expression]',alias:['e']})
-eval.setExecute(async (message,args)=>{
+let evalc=new Command({name:'eval',description:'evaluates an expression',usage:'[expression]',alias:['e']})
+evalc.setExecute(async (message,args)=>{
     if(message.author.id!=message.client.ownerID){return message.reply('not allowed to use this command')}
     try {
         let content = args.join(' ');
@@ -19,4 +19,4 @@ eval.setExecute(async (message,args)=>{
         message.channel.send(`\`ERROR\` \`\`\`xl\n${err}\n\`\`\``);
     }
 })
-module.exports=eval
+module.exports=evalc
