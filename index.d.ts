@@ -16,7 +16,7 @@ export class CommandHandler {
     public constructor(client:Discord.Client);
     protected commands:Discord.Collection<string,Command>
     public load(directory:string):void
-    public exec(message:Discord.Message):void
+    public handle(message:Discord.Message):void
 
     public on(event:'commandError',listener:(error:Error)=>void):this;
     public on(event:'commandInvalid',listener:(member:Discord.GuildMember,command:String)=>void):this;
