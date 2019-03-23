@@ -15,6 +15,7 @@ export class Client extends Discord.Client{
 export class CommandHandler {
     public constructor(client:Discord.Client);
     protected commands:Discord.Collection<string,Command>
+    protected cooldowns:Map<string,Cooldown>
     public load(directory:string):void
     public handle(message:Discord.Message):void
 
@@ -23,7 +24,7 @@ export class CommandHandler {
     
 }
 export  class Command{
-    public constructor(options:{name:String,description:String,usage:String,alias:Array<String>})
+    public constructor(options:{name:String,description:String,usage:String,alias:Array<String>,cooldown:number})
     protected name:String;
     protected alias:Array<String>
     protected description:String;
@@ -34,11 +35,13 @@ export  class Command{
 
 export  class Cooldown{
     constructor()
-
-    public add(value:any):void
-    public isOnCooldown(value:any):Boolean
-    public remove(value:any):void
-    public removeAfter(value:any,time:number):void
+    protected size:number
+    public add(key:any,value:any):this
+    public has(key:any):Boolean
+    public delete(key:any):this
+    public deleteAfter(key:any,time:number):void
+    public get(key:any):any
+    public array():Array<[any,any]>
 }
 
 

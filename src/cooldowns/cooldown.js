@@ -1,23 +1,31 @@
-class Cooldown {
+class Cooldown extends Map {
 	constructor() {
-		this._cooldown = new Set();
+		super()
 	}
-	add(value) {
-		this._cooldown.add(value);
-	}
-
-	isOnCooldown(value) {
-		return this._cooldown.has(value);
+	add(key,value) {
+		return super.set(key,value);
 	}
 
-	remove(value) {
-		this._cooldown.delete(value);
+	has(key) {
+		return super.has(key);
 	}
 
-	removeAfter(value, time) {
+	get(key){
+		return super.get(key)
+	}
+
+	delete(key) {
+		super.delete(key);
+		return this
+	}
+
+	deleteAfter(key, time) {
 		setTimeout(() => {
-			this._cooldown.delete(value);
+			this.delete(key);
 		}, time);
+	}
+	array(){
+		return Array.from(this)
 	}
 }
 

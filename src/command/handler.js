@@ -2,12 +2,13 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const events = require('events');
+const Cooldown=require('../cooldowns/cooldown')
 class CommandHandler extends events.EventEmitter {
 	constructor(client) {
 		super()
 		this.client = client;
 		this.commands = new Discord.Collection();
-		this.cooldowns = new Set();
+		this.cooldowns = new Cooldown();
 	}
 	load(directory) {
 		const commandFiles = fs.readdirSync(`${directory}`).filter(file=>file.endsWith('.js'));
@@ -40,6 +41,21 @@ class CommandHandler extends events.EventEmitter {
 		if(!command) {
 			return this.emit('commandInvalid', message.member, commandName);
 		}
+		if(!this.cooldowns.has(command.name)){
+			this.cooldowns.set(command.name,new Cooldown())
+		}
+		let now=Date.now()
+		let timestamp=this.cooldowns.get(command.name)
+		let cooldownAmmount=(command.cooldown || 1) * 1000
+		if(timestamp.has(message.author.id)){
+			const expireTime=timestamps.get(message.author.id) + cooldownAmmount
+			if(now < expireTime){
+				const timeLeft = (expirationTime - now) / 1000;
+				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			}
+		}
+		timestamp.set(message.author.id, now);
+		setTimeout(() => timestamp.delete(message.author.id), cooldownAmount);
 		try{
 			command.execute(message, args);
 		}
