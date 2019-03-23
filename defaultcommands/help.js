@@ -7,7 +7,7 @@ help.setExecute((message,args)=>{
 		if(x.includes('\\')) {
 			return x.slice(1, 3);
 		}
-		return `@${client.user.username} `;
+		return `@${message.client.user.username} `;
 	});
 	prefix = prefix.join(' or ');
 	if(!args.length) {
@@ -37,7 +37,7 @@ help.setExecute((message,args)=>{
 	if (command.description) data.push(`**Description:** ${command.description}`);
 	if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
 
-	data.push(`**Cooldown:** ${command.cooldown || 0} second(s)`);
+	data.push(`**Cooldown:** ${command.cooldown || 1} second(s)`);
 
 	message.channel.send(data, { split: true });
 })

@@ -46,11 +46,11 @@ class CommandHandler extends events.EventEmitter {
 		}
 		let now=Date.now()
 		let timestamp=this.cooldowns.get(command.name)
-		let cooldownAmmount=(command.cooldown || 1) * 1000
+		let cooldownAmount=(command.cooldown || 1) * 1000
 		if(timestamp.has(message.author.id)){
-			const expireTime=timestamps.get(message.author.id) + cooldownAmmount
+			const expireTime=timestamp.get(message.author.id) + cooldownAmount
 			if(now < expireTime){
-				const timeLeft = (expirationTime - now) / 1000;
+				const timeLeft = (expireTime - now) / 1000;
 				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
 			}
 		}
