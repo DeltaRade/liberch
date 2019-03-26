@@ -16,7 +16,7 @@ It is a framework for Discord.js
 ```javascript
 const liberch=require('liberch');
 const client=new liberch.Client({prefixes:['\\/'],ownerID:'',mentionAsPrefix:false});
-client.loadCommands('commands');
+client.commandHandler.load('commands');
 client.loadEvents('events');
 
 client.login('token') 
@@ -24,16 +24,13 @@ client.login('token')
 ## Commands
 ```javascript
 const liberch=require('liberch');
-class SayCommand  extends liberch.Command{
-  constructor(){
-    super({name:'say',alias:['s']})
-  }
-  execute(client,message,args){
+let say=new liberch.Command({name:'say',alias:['s']})
+say.execute(message,args=>{
     message.delete()
     message.channel.send(args.join(' '))
-  }
- }
- module.exports=SayCommand
+  })
+ module.exports=say
  ```
+
  # links
- **example bot** https://github.com/DeltaRade/Anzeo
+ [**example bot**](https://github.com/DeltaRade/Anzeo)
