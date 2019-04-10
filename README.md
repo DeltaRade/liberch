@@ -1,5 +1,12 @@
 # liberch
 It is a framework for Discord.js
+- [liberch](#liberch)
+- [Installation](#installation)
+- [Example code](#example-code)
+  - [Client](#client)
+  - [Commands](#commands)
+  - [Events](#events)
+
 
 **Features:**
   * **command and event handler**
@@ -15,7 +22,7 @@ It is a framework for Discord.js
 ## Client
 ```javascript
 const liberch=require('liberch');
-const client=new liberch.Client({prefixes:['\\/'],ownerID:'',mentionAsPrefix:false});
+const client=new liberch.Client({prefixes:['/',';'],ownerID:'',mentionAsPrefix:false});
 client.commandHandler.load('commands');
 client.loadEvents('events');
 
@@ -25,12 +32,19 @@ client.login('token')
 ```javascript
 const liberch=require('liberch');
 let say=new liberch.Command({name:'say',alias:['s']})
-say.execute(message,args=>{
+say.setExecute((message,args)=>{
     message.delete()
     message.channel.send(args.join(' '))
   })
  module.exports=say
  ```
 
+## Events
+`events/ready.js`
+```js
+module.exports=(client)=>{
+  console.log(`ready ${client.user.username}`)
+}
+```
  # links
  [**example bot**](https://github.com/DeltaRade/Anzeo)
