@@ -1,5 +1,5 @@
 const Command = require('../src/command/command');
-
+const discord=require('discord.js')
 const cblockre = /(^```js)|(```$)/g;
 let evalc=new Command({name:'eval',description:'evaluates an expression',usage:'[expression]',alias:['e']})
 evalc.setExecute(async (message,args)=>{
