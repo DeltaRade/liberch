@@ -13,7 +13,8 @@
   "author": "DeltaRade",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.4.2"
+    "discord.js": "^11.4.2",
+    "jndb": "^3.5.0"
   },
   "types": "index.d.ts"
 }
