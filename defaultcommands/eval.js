@@ -2,7 +2,7 @@ const Command = require('../src/command/command');
 const discord=require('discord.js')
 const cblockre = /(^```js)|(```$)/g;
 let evalc=new Command({name:'eval',description:'evaluates an expression',usage:'[expression]',alias:['e']})
-evalc.setExecute(async (message,args)=>{
+evalc.run(async (message,args)=>{
     if(message.author.id!=message.client.ownerID){return message.reply('not allowed to use this command')}
     try {
         let content = args.join(' ');

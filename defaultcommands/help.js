@@ -1,6 +1,6 @@
 const Command = require('../src/command/command');
 let help=new Command({ name:'help', description:'list all commands or info about a specific command', usage:'[command name]' })
-help.setExecute((message,args)=>{
+help.run((message,args)=>{
 	let commands=message.client.commandHandler.commands
 	const data = []
 	let prefix = message.client.prefixes.map(x=>{
