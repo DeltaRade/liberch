@@ -2,23 +2,58 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const events = require('events');
-const Cooldown=require('../cooldowns/cooldown')
+const Cooldown = require('../cooldowns/cooldown');
+/**
+ * @extends {events.EventEmitter}
+ */
 class CommandHandler extends events.EventEmitter {
-	constructor(client) {
-		super()
+	constructor(client, directory) {
+		super();
 		this.client = client;
 		this.commands = new Discord.Collection();
 		this.cooldowns = new Cooldown();
+		this.directory = directory;
+		this.categories = new Discord.Collection();
 	}
-	load(directory) {
-		const commandFiles = fs.readdirSync(`${directory}`).filter(file=>file.endsWith('.js'));
+	load() {
+		let folder = path.resolve(this.directory);
+		const commandFiles = fs
+			.readdirSync(`${this.directory}`)
+			.filter((file) => file.endsWith('.js'));
+		const jsfile = files.filter(
+			(f) =>
+				f.split('.').pop() === 'js' &&
+				!fs.statSync(`${folder}/` + f).isDirectory()
+		); // get all .js files
 
-		for (const file of commandFiles) {
-			const command = require(path.resolve(`${directory}/${file}`));
+		const categories = files.filter((f) =>
+			fs.statSync(folder + '/' + f).isDirectory()
+		);
+
+		if (jsfile.length <= 0 && categorys.length <= 0) {
+			// if no commands present
+
+			console.log(" Couldn't find commands."); // log no commands => close commandhandler and start client
+		}
+		for (const file of jsfile) {
+			file = path.resolve(file);
+
+			const command = require(`${file}`);
 			this.commands.set(command.name, command);
 		}
-		loadDefault(this,'help')
-		loadDefault(this,'eval')
+		for (const cat of categories) {
+			const catFiles = fs
+				.readdirSync(`${path.resolve(cat)}`)
+				.filter((file) => file.endsWith('.js'));
+			this.categories.set(cat, catFiles.length);
+			for (let file of catFiles) {
+				file = path.resolve(file);
+				const command = require(path.resolve(`${file}`));
+				this.commands.set(command.name, command);
+			}
+		}
+		loadDefault(this, 'help');
+		loadDefault(this, 'eval');
 	}
 
 	/**
@@ -27,45 +62,92 @@ class CommandHandler extends events.EventEmitter {
 	 * @param {Discord.Message} message
 	 * @returns
 	 * @memberof CommandHandler
+	 * @fires commandError
+	 * @fires commandInvalid
 	 */
-	
-	handle(message){
-		if(message.system)return;
-		if(message.author.bot)return;
-		const prefixMention = new RegExp(`^(${this.client.prefixes.join('|')})`);
-		const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : null;
-		if (!message.content.startsWith(prefix) || message.author.bot) {return;}
-		const args = message.content.slice(prefix.length).trim().split(/ +/g);
+
+	handle(message) {
+		if (message.system) return;
+		if (message.author.bot) return;
+		const prefixMention = new RegExp(
+			`^(${this.client.prefixes.join('|') |
+				`<@!?${this.client.user.id}>`})`
+		);
+		const prefix = message.content.match(prefixMention)
+			? message.content.match(prefixMention)[0]
+			: null;
+		if (!message.content.startsWith(prefix) || message.author.bot) {
+			return;
+		}
+		const args = message.content
+			.slice(prefix.length)
+			.trim()
+			.split(/ +/g);
 		const commandName = args.shift().toLowerCase();
-		const command = this.commands.get(commandName) || this.commands.find(x=>x.alias && x.alias.includes(commandName));
-		if(!command) {
+		const command =
+			this.commands.get(commandName) ||
+			this.commands.find((x) => x.alias && x.alias.includes(commandName));
+		if (!command) {
 			return this.emit('commandInvalid', message.member, commandName);
 		}
-		if(!this.cooldowns.has(command.name)){
-			this.cooldowns.set(command.name,new Cooldown())
+		if (!this.cooldowns.has(command.name)) {
+			this.cooldowns.set(command.name, new Cooldown());
 		}
-		let now=Date.now()
-		let timestamp=this.cooldowns.get(command.name)
-		let cooldownAmount=(command.cooldown || 1) * 1000
-		if(timestamp.has(message.author.id)){
-			const expireTime=timestamp.get(message.author.id) + cooldownAmount
-			if(now < expireTime){
+		let now = Date.now();
+		let timestamp = this.cooldowns.get(command.name);
+		let cooldownAmount = (command.cooldown || 1) * 1000;
+		if (timestamp.has(message.author.id)) {
+			const expireTime =
+				timestamp.get(message.author.id) + cooldownAmount;
+			if (now < expireTime) {
 				const timeLeft = (expireTime - now) / 1000;
-				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+				return message.reply(
+					`please wait ${timeLeft.toFixed(
+						1
+					)} more second(s) before reusing the \`${
+						command.name
+					}\` command.`
+				);
 			}
 		}
 		timestamp.set(message.author.id, now);
 		setTimeout(() => timestamp.delete(message.author.id), cooldownAmount);
-		try{
+		try {
 			command.execute(message, args);
-		}
-		catch(error) {
+		} catch (error) {
+			/**
+			 * @event commandError
+			 * @param {Error} error
+			 */
 			this.emit('commandError', error);
 		}
 	}
+	reloadAll() {
+		let folder = path.resolve(this.directory);
+		const commandFiles = fs
+			.readdirSync(folder)
+			.filter((file) => file.endsWith('.js'));
+
+		for (const file of commandFiles) {
+			delete require.cache[require.resolve(`${folder}/${file}`)];
+			try {
+				const command = require(`${folder}/${file}`);
+				this.commands.delete(command.help.name);
+				this.commands.set(command.help.name, command);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	}
 }
-function loadDefault(handler,def){
+function loadDefault(handler, def) {
 	const command = require(`../../defaultcommands/${def}`);
 	handler.commands.set(command.name, command);
 }
 module.exports = CommandHandler;
+
+/**
+ * Emitted for errors in a command
+ * @event commandError
+ * @param {Error} error error that occurred
+ */

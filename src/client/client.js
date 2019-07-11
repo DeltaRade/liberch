@@ -2,20 +2,20 @@ const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
 const EventHandler = require('../events/handler');
 class Client extends Discord.Client {
-	constructor(options = { prefixes:[], ownerID:'', mentionAsPrefix:false }) {
+	constructor(options = { prefixes: [], ownerID: '', dbFormat }) {
 		super(options);
 
 		this.ownerID = options.ownerID;
 		this._helpcommand = '../../defaultcommands/help';
-		this.prefixes = options.prefixes.map(v=>`\\${v}`);
+		this.prefixes = options.prefixes.map((v) => `\\${v}`);
 		this.commandHandler = new CommandHandler(this);
 		this.eventHandler = new EventHandler(this);
-		this._mentionAsPrefix = options.mentionAsPrefix;
-		this.on('ready',()=>{
-			options.mentionAsPrefix?this.prefixes.push(`<@!?${this.user.id}>`):''
-		})
+		this.dbFormat = this.dbFormat;
 	}
-
+	/**
+	 *
+	 * @param {string} directory
+	 */
 	loadEvents(directory) {
 		this.eventHandler.load(directory);
 	}

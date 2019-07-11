@@ -7,20 +7,16 @@ class FileWatch extends events.EventEmitter {
 	watchFile(filepath) {
 		let fsWait = false;
 		fs.watch(filepath, (event, file)=>{
-			if (file) {
 				if (fsWait) return;
 				fsWait = setTimeout(() => {
 					fsWait = false;
 				}, 1000);
 				this.emit('changed', event, file);
-
-			}
 		});
 
 	}
 	watchDir(dir) {
 		let fsWait = false;
-
 		fs.watch(dir, (event, file)=>{
 			if (file) {
 				if (fsWait) return;
