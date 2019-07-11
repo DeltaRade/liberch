@@ -18,15 +18,14 @@ class CommandHandler extends events.EventEmitter {
 	load() {
 		let folder = path.resolve(this.directory);
 		const commandFiles = fs
-			.readdirSync(`${this.directory}`)
-			.filter((file) => file.endsWith('.js'));
-		const jsfile = files.filter(
+			.readdirSync(`${this.directory}`);
+		const jsfile = commandFiles.filter(
 			(f) =>
 				f.split('.').pop() === 'js' &&
 				!fs.statSync(`${folder}/` + f).isDirectory()
 		); // get all .js files
 
-		const categories = files.filter((f) =>
+		const categories = commandFiles.filter((f) =>
 			fs.statSync(folder + '/' + f).isDirectory()
 		);
 
@@ -35,21 +34,32 @@ class CommandHandler extends events.EventEmitter {
 
 			console.log(" Couldn't find commands."); // log no commands => close commandhandler and start client
 		}
-		for (const file of jsfile) {
-			file = path.resolve(file);
-
-			const command = require(`${file}`);
-			this.commands.set(command.name, command);
+		for (let file of jsfile) {
+			file = path.resolve(this.directory+'/'+file);
+			try{
+				const command = require(file);
+				this.commands.set(command.help.name, command);
+			}
+			catch(e){
+				console.error(e)
+			}
 		}
-		for (const cat of categories) {
+		for (let cat of categories) {
+			cat=path.resolve(this.directory+'/'+cat)
 			const catFiles = fs
-				.readdirSync(`${path.resolve(cat)}`)
+				.readdirSync(`${cat}`)
 				.filter((file) => file.endsWith('.js'));
 			this.categories.set(cat, catFiles.length);
 			for (let file of catFiles) {
-				file = path.resolve(file);
-				const command = require(path.resolve(`${file}`));
-				this.commands.set(command.name, command);
+				file = path.resolve(cat+'/'+file);
+				try{
+					const command = require(file);
+					command.category=cat
+					this.commands.set(command.help.name, command);
+				}
+				catch(e){
+					console.log(e)
+				}
 			}
 		}
 		loadDefault(this, 'help');
@@ -66,15 +76,12 @@ class CommandHandler extends events.EventEmitter {
 	 * @fires commandInvalid
 	 */
 
-	handle(message) {
+	handle(client,message) {
 		if (message.system) return;
 		if (message.author.bot) return;
-		const prefixMention = new RegExp(
-			`^(${this.client.prefixes.join('|') |
-				`<@!?${this.client.user.id}>`})`
-		);
-		const prefix = message.content.match(prefixMention)
-			? message.content.match(prefixMention)[0]
+		const prefixRegex = new RegExp(`^(<@!?${this.client.user.id}>|${this.client.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')})\\s*`);
+		const prefix = message.content.match(prefixRegex)
+			? message.content.match(prefixRegex)[0]
 			: null;
 		if (!message.content.startsWith(prefix) || message.author.bot) {
 			return;
@@ -86,7 +93,7 @@ class CommandHandler extends events.EventEmitter {
 		const commandName = args.shift().toLowerCase();
 		const command =
 			this.commands.get(commandName) ||
-			this.commands.find((x) => x.alias && x.alias.includes(commandName));
+			this.commands.find((x) => x.help.alias && x.help.alias.includes(commandName));
 		if (!command) {
 			return this.emit('commandInvalid', message.member, commandName);
 		}
@@ -113,7 +120,7 @@ class CommandHandler extends events.EventEmitter {
 		timestamp.set(message.author.id, now);
 		setTimeout(() => timestamp.delete(message.author.id), cooldownAmount);
 		try {
-			command.execute(message, args);
+			command.execute(client,message, args);
 		} catch (error) {
 			/**
 			 * @event commandError
@@ -142,7 +149,7 @@ class CommandHandler extends events.EventEmitter {
 }
 function loadDefault(handler, def) {
 	const command = require(`../../defaultcommands/${def}`);
-	handler.commands.set(command.name, command);
+	handler.commands.set(command.help.name, command);
 }
 module.exports = CommandHandler;
 
