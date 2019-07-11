@@ -1,16 +1,22 @@
 const Discord = require('discord.js');
 const CommandHandler = require('../command/handler');
 const EventHandler = require('../events/handler');
+const path = require('path');
+const fs=require('fs')
 class Client extends Discord.Client {
-	constructor(options = { prefixes: [], ownerID: '', dbFormat }) {
+	constructor(
+		options = { prefix, ownerID: '', commandsDir: 'commands' }
+	) {
 		super(options);
-
+		if (!options.commandsDir) options.commandsDir = 'commands';
 		this.ownerID = options.ownerID;
 		this._helpcommand = '../../defaultcommands/help';
-		this.prefixes = options.prefixes.map((v) => `\\${v}`);
-		this.commandHandler = new CommandHandler(this);
+		this.prefix = options.prefix;
+		this.commandHandler = new CommandHandler(this, options.commandsDir);
+		this.commandHandler.load()
 		this.eventHandler = new EventHandler(this);
-		this.dbFormat = this.dbFormat;
+		this.commandsDir = options.commandsDir;
+		this.settings = null;
 	}
 	/**
 	 *
@@ -20,19 +26,25 @@ class Client extends Discord.Client {
 		this.eventHandler.load(directory);
 	}
 
-	/*reloadCommand(path) {
-		const command = require(peth.resolve(`${path}`));
-		// console.log(command.prototype.execute);
-		if(typeof command.prototype.execute === 'function') {
-			this._commandhandler.commands.delete(new command().name);
-			delete require.cache[require.resolve(peth.resolve(`${path}`))];
+	reloadCommands() {
+		let folder = path.resolve(this.commandsDir);
+		const commandFiles = fs
+			.readdirSync(folder)
+			.filter((file) => file.endsWith('.js'));
 
-			const nCommand = require(peth.resolve(`${path}`));
-
-			const x = new nCommand();
-			this._commandhandler.commands.set(x.name, x);
-
+		for (const file of commandFiles) {
+			delete require.cache[require.resolve(`${folder}/${file}`)];
+			try {
+				const command = require(`${folder}/${file}`);
+				this.commandHandler.commands.delete(command.name);
+				this.commandHandler.commands.set(command.name, command);
+			} catch (err) {
+				console.log(err);
+			}
 		}
-	}*/
+	}
+	setSettings(settingsDB) {
+		this.settings = settingsDB;
+	}
 }
 module.exports = Client;
