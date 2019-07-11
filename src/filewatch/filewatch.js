@@ -18,14 +18,11 @@ class FileWatch extends events.EventEmitter {
 	watchDir(dir) {
 		let fsWait = false;
 		fs.watch(dir, (event, file)=>{
-			if (file) {
 				if (fsWait) return;
 				fsWait = setTimeout(() => {
 					fsWait = false;
 				}, 1000);
 				this.emit('dirChanged', event, dir, file);
-			}
-
 		});
 	}
 
