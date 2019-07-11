@@ -1,15 +1,26 @@
 import EventEmitter from 'events';
-import Discord, { Attachment, FileOptions, Message } from 'discord.js';
+import Discord, {
+	Attachment,
+	FileOptions,
+	Message,
+	PermissionResolvable,
+	Channel,
+} from 'discord.js';
+import { PathLike } from 'fs';
 declare class Client extends Discord.Client {
 	constructor(options: {
-		prefixes: [];
+		prefix: String;
 		ownerID: String;
-		mentionAsPrefix: Boolean;
+		commandsDir: string;
 	});
 	protected commandHandler: CommandHandler;
-	protected prefixes: Array<String>;
+	protected prefix: String;
 	protected ownerID: String;
+	public settings: JSONSettingsDB;
+	public commandsDir: string;
 	public loadEvents(directory: String): void;
+	public setSettings(db: JSONSettingsDB): this;
+	public reloadCommands(): void;
 	//public reloadCommand(path:String):void
 }
 declare class CommandHandler {
@@ -26,21 +37,26 @@ declare class CommandHandler {
 	): this;
 }
 declare class Command {
-	public constructor(options: {
-		name: String;
-		description: String;
-		usage: String;
-		alias: Array<String>;
-		cooldown: number;
-	});
+	public constructor({
+		name,
+		description,
+		usage,
+		alias,
+		cooldown,
+		requirePermissions,
+		requireUserPermissions,
+	}: CommandOptions);
 	protected name: String;
 	protected alias: Array<String>;
 	protected description: String;
 	protected usage: String;
-	public setExecute(
-		fn: (message: Discord.Message, args: Array<string>) => void
-	): void;
-	public execute(message: Discord.Message, args: Array<String>): this;
+	public run(
+		fn: (
+			client: Client,
+			message: Discord.Message,
+			args: Array<string>
+		) => void
+	): this;
 }
 
 declare class Cooldown {
@@ -56,8 +72,8 @@ declare class Cooldown {
 
 declare class FileWatch {
 	constructor();
-	public watchDir(directory: 'string path');
-	public watchFile(filename: 'pathlike');
+	public watchDir(directory: PathLike);
+	public watchFile(filename: PathLike);
 	public on(
 		event: 'changed',
 		listener: (event: String, file: String) => void
@@ -137,5 +153,29 @@ declare class Utils {
 	public permissionNumberToFlag(number: number): Array<String>;
 	public static msToTime(value: Number): String;
 }
+declare abstract class SettingsDB {
+	abstract get(guildID: string, key: string, defaultVal: any): {};
+	abstract set(guildID: string, key: string, value: any): this;
+	abstract delete(guildID: string, keu: string): this;
+	abstract clear(guildID: string): {};
+	abstract getAll(guildID: string): {};
+}
+declare class JSONSettingsDB extends SettingsDB {
+	constructor();
+	get(guildID: string, key: string, defaultVal: any): any;
+	set(guildID: string, key: string, value: any): this;
+	delete(guildID: string, keu: string): this;
+	clear(guildID: string): this;
+	getAll(guildID: string): {};
+}
 
-export { Client, Command, Utils, FileWatch };
+declare type CommandOptions = {
+	name: string;
+	description?: string;
+	usage?: string;
+	alias?: string[];
+	cooldown?: number;
+	requireUserPermissions?: PermissionResolvable[];
+	requirePermissions?: PermissionResolvable[];
+};
+export { Client, Command, Utils, FileWatch, JSONSettingsDB };
