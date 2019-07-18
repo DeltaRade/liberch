@@ -164,9 +164,9 @@ declare class JSONSettingsDB extends SettingsDB {
 	constructor();
 	get(guildID: string, key: string, defaultVal: any): any;
 	set(guildID: string, key: string, value: any): this;
-	delete(guildID: string, keu: string): this;
+	delete(guildID: string, key: string): this;
 	clear(guildID: string): this;
-	getAll(guildID: string): {[key:string]:any};
+	getAll(guildID: string): { [key: string]: any };
 }
 
 declare type CommandOptions = {
