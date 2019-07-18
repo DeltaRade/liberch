@@ -13,7 +13,7 @@ declare class Client extends Discord.Client {
 		ownerID: String;
 		commandsDir: string;
 	});
-	protected commandHandler: CommandHandler;
+	public commandHandler: CommandHandler;
 	protected prefix: String;
 	protected ownerID: String;
 	public settings: JSONSettingsDB;

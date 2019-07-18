@@ -5,9 +5,9 @@ const path = require('path');
 const fs=require('fs')
 class Client extends Discord.Client {
 	constructor(
-		options = { prefix, ownerID: '', commandsDir: 'commands' }
+		options = { prefix:undefined, ownerID: '', commandsDir: 'commands' }
 	) {
-		super(options);
+		super();
 		if (!options.commandsDir) options.commandsDir = 'commands';
 		this.ownerID = options.ownerID;
 		this._helpcommand = '../../defaultcommands/help';
