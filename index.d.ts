@@ -11,7 +11,7 @@ declare class Client extends Discord.Client {
 	constructor(options: {
 		prefix: String;
 		ownerID: String;
-		commandsDir: string;
+		commandsDir?: string;
 	});
 	public commandHandler: CommandHandler;
 	protected prefix: String;
