@@ -154,11 +154,11 @@ declare class Utils {
 	public static msToTime(value: Number): String;
 }
 declare abstract class SettingsDB {
-	abstract get(guildID: string, key: string, defaultVal: any): {};
+	abstract get(guildID: string, key: string, defaultVal: any): any;
 	abstract set(guildID: string, key: string, value: any): this;
-	abstract delete(guildID: string, keu: string): this;
+	abstract delete(guildID: string, key: string): this;
 	abstract clear(guildID: string): {};
-	abstract getAll(guildID: string): {};
+	abstract getAll(guildID: string): { [key: string]: any };
 }
 declare class JSONSettingsDB extends SettingsDB {
 	constructor();
