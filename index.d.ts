@@ -157,7 +157,7 @@ declare abstract class SettingsDB {
 	abstract get(guildID: string, key: string, defaultVal: any): any;
 	abstract set(guildID: string, key: string, value: any): this;
 	abstract delete(guildID: string, key: string): this;
-	abstract clear(guildID: string): {};
+	abstract clear(guildID: string): this;
 	abstract getAll(guildID: string): { [key: string]: any };
 }
 declare class JSONSettingsDB extends SettingsDB {
