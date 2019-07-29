@@ -5,6 +5,8 @@ import Discord, {
 	Message,
 	PermissionResolvable,
 	Channel,
+	Collection,
+	Guild,
 } from 'discord.js';
 import { PathLike } from 'fs';
 declare class Client extends Discord.Client {
@@ -162,11 +164,11 @@ declare abstract class SettingsDB {
 }
 declare class JSONSettingsDB extends SettingsDB {
 	constructor();
-	get(guildID: string, key: string, defaultVal: any): any;
-	set(guildID: string, key: string, value: any): this;
-	delete(guildID: string, key: string): this;
-	clear(guildID: string): this;
-	getAll(guildID: string): { [key: string]: any };
+	get(guild: Guild, key: string, defaultVal: any): any;
+	set(guild: Guild, key: string, value: any): this;
+	delete(guild: Guild, key: string): this;
+	clear(guild: Guild): this;
+	getAll(guild: Guild): { [key: string]: any };
 }
 
 declare type CommandOptions = {

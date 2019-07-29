@@ -7,28 +7,28 @@ class JSONSettingsDB extends base {
 		this.conn.use('settings');
 		return this;
 	}
-	get(guildID, key, defaultVal) {
-		let data = this.conn.secure(guildID, {});
+	get(guild, key, defaultVal) {
+		let data = this.conn.secure(guild.id, {});
 		return data[key] ? data[key] : defaultVal;
 	}
-	delete(guildID, key) {
-		let data = this.conn.secure(guildID, {});
+	delete(guild, key) {
+		let data = this.conn.secure(guild.id, {});
 		delete data[key];
-		this.conn.insert(guildID, data);
+		this.conn.insert(guild.id, data);
 		return this
 	}
-	set(guildID, key, value) {
-		let data = this.conn.secure(guildID, {});
+	set(guild, key, value) {
+		let data = this.conn.secure(guild.id, {});
 		data[key] = value;
-		this.conn.insert(guildID, data);
+		this.conn.insert(guild.id, data);
 		return this
 	}
-	clear(guildID) {
-		this.conn.insert(guildID, {});
+	clear(guild) {
+		this.conn.insert(guild.id, {});
 		return this
 	}
-	getAll(guildID) {
-		return this.conn.secure(guildID, {});
+	getAll(guild) {
+		return this.conn.secure(guild.id, {});
 	}
 }
 module.exports = JSONSettingsDB;
