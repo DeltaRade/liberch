@@ -164,7 +164,7 @@ declare abstract class SettingsDB {
 }
 declare class JSONSettingsDB extends SettingsDB {
 	constructor();
-	get(guild: Guild, key: string, defaultVal: any): any;
+	get<T>(guild: Guild, key: string, defaultVal: T): T;
 	set(guild: Guild, key: string, value: any): this;
 	delete(guild: Guild, key: string): this;
 	clear(guild: Guild): this;
