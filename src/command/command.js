@@ -36,7 +36,7 @@ class Command {
 	}
 
 	/**
-	 *@param {(client:import('../client/client'),message:Message,args:[])=>void} fn
+	 *@param {(client:import('../client/client'),message:Message,args:Array<string>)=>void} fn
 	 * @returns {this}
 	 */
 	run(fn) {

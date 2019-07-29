@@ -1,14 +1,9 @@
 const Command = require('../src/command/command');
 let help=new Command({ name:'help', description:'list all commands or info about a specific command', usage:'[command name]' })
-help.run((message,args)=>{
-	let commands=message.client.commandHandler.commands
+help.run((client,message,args)=>{
+	let commands=client.commandHandler.commands
 	const data = []
-	let prefix = message.client.prefixes.map(x=>{
-		if(x.includes('\\')) {
-			return x.slice(1, 3);
-		}
-		return `@${message.client.user.username} `;
-	});
+	let prefix = client.prefix
 	prefix = prefix.join(' or ');
 	if(!args.length) {
 		data.push('Here\'s a list of all my commands');
