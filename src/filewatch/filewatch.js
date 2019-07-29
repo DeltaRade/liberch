@@ -8,6 +8,7 @@ class FileWatch extends events.EventEmitter {
 		let fsWait = false;
 		fs.watch(filepath, (event, file)=>{
 				if (fsWait) return;
+				// @ts-ignore
 				fsWait = setTimeout(() => {
 					fsWait = false;
 				}, 1000);
@@ -19,6 +20,7 @@ class FileWatch extends events.EventEmitter {
 		let fsWait = false;
 		fs.watch(dir, (event, file)=>{
 				if (fsWait) return;
+				// @ts-ignore
 				fsWait = setTimeout(() => {
 					fsWait = false;
 				}, 1000);
