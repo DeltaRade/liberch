@@ -20,7 +20,7 @@ class Command {
 		}
 	) {
 		if (name === undefined) {
-			throw new Error('NAME_NOT_DEFINED');
+			throw new Error(`command ${this.constructor.name} requires a name`);
 		}
 
 		this.help = {
