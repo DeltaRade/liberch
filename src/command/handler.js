@@ -10,6 +10,9 @@ class CommandHandler extends events.EventEmitter {
 	constructor(client, directory) {
 		super();
 		this.client = client;
+		/**
+		 * @type {Discord.Collection<string,import('./command')>}
+		 */
 		this.commands = new Discord.Collection();
 		this.cooldowns = new Cooldown();
 		this.directory = directory;
@@ -17,8 +20,7 @@ class CommandHandler extends events.EventEmitter {
 	}
 	load() {
 		let folder = path.resolve(this.directory);
-		const commandFiles = fs
-			.readdirSync(`${this.directory}`);
+		const commandFiles = fs.readdirSync(`${this.directory}`);
 		const jsfile = commandFiles.filter(
 			(f) =>
 				f.split('.').pop() === 'js' &&
@@ -29,36 +31,34 @@ class CommandHandler extends events.EventEmitter {
 			fs.statSync(folder + '/' + f).isDirectory()
 		);
 
-		if (jsfile.length <= 0 && categorys.length <= 0) {
+		if (jsfile.length <= 0 && categories.length <= 0) {
 			// if no commands present
 
 			console.log(" Couldn't find commands."); // log no commands => close commandhandler and start client
 		}
 		for (let file of jsfile) {
-			file = path.resolve(this.directory+'/'+file);
-			try{
+			file = path.resolve(this.directory + '/' + file);
+			try {
 				const command = require(file);
 				this.commands.set(command.help.name, command);
-			}
-			catch(e){
-				console.error(e)
+			} catch (e) {
+				console.error(e);
 			}
 		}
 		for (let cat of categories) {
-			cat=path.resolve(this.directory+'/'+cat)
+			cat = path.resolve(this.directory + '/' + cat);
 			const catFiles = fs
 				.readdirSync(`${cat}`)
 				.filter((file) => file.endsWith('.js'));
 			this.categories.set(cat, catFiles.length);
 			for (let file of catFiles) {
-				file = path.resolve(cat+'/'+file);
-				try{
+				file = path.resolve(cat + '/' + file);
+				try {
 					const command = require(file);
-					command.category=cat
+					command.category = cat;
 					this.commands.set(command.help.name, command);
-				}
-				catch(e){
-					console.log(e)
+				} catch (e) {
+					console.log(e);
 				}
 			}
 		}
@@ -76,10 +76,15 @@ class CommandHandler extends events.EventEmitter {
 	 * @fires commandInvalid
 	 */
 
-	handle(client,message) {
+	handle(client, message) {
 		if (message.system) return;
 		if (message.author.bot) return;
-		const prefixRegex = new RegExp(`^(<@!?${this.client.user.id}>|${this.client.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')})\\s*`);
+		const prefixRegex = new RegExp(
+			`^(<@!?${this.client.user.id}>|${this.client.prefix.replace(
+				/[-/\\^$*+?.()|[\]{}]/g,
+				'\\$&'
+			)})\\s*`
+		);
 		const prefix = message.content.match(prefixRegex)
 			? message.content.match(prefixRegex)[0]
 			: null;
@@ -93,16 +98,50 @@ class CommandHandler extends events.EventEmitter {
 		const commandName = args.shift().toLowerCase();
 		const command =
 			this.commands.get(commandName) ||
-			this.commands.find((x) => x.help.alias && x.help.alias.includes(commandName));
+			this.commands.find(
+				(x) => x.help.alias && x.help.alias.includes(commandName)
+			);
 		if (!command) {
 			return this.emit('commandInvalid', message.member, commandName);
 		}
-		if (!this.cooldowns.has(command.name)) {
-			this.cooldowns.set(command.name, new Cooldown());
+		if (
+			command.help.requirePermissions &&
+			command.help.requirePermissions.length
+		) {
+			let missing = [];
+			if (message.guild) {
+				missing = command.help.requiresBotPermissions.filter(
+					(permission) =>
+						!message.channel
+							.permissionsFor(message.guild.me)
+							.has(permission)
+				);
+			} else {
+				missing = command.help.requiresBotPermissions.filter(
+					(permission) =>
+						![
+							'VIEW_CHANNEL',
+							'SEND_MESSAGES',
+							'EMBED_LINKS',
+							'ADD_REACTIONS ',
+							'ATTACH_FILES',
+						].includes(permission)
+				);
+			}
+
+			if (missing.length)
+				return message.reply(
+					`I am missing the following Permissions to execute this Command: ${missing
+						.map((x) => `\`${x}\``)
+						.join(', ')}`
+				);
+		}
+		if (!this.cooldowns.has(command.help.name)) {
+			this.cooldowns.set(command.help.name, new Cooldown());
 		}
 		let now = Date.now();
-		let timestamp = this.cooldowns.get(command.name);
-		let cooldownAmount = (command.cooldown || 1) * 1000;
+		let timestamp = this.cooldowns.get(command.help.name);
+		let cooldownAmount = (command.help.cooldown || 1) * 1000;
 		if (timestamp.has(message.author.id)) {
 			const expireTime =
 				timestamp.get(message.author.id) + cooldownAmount;
@@ -112,7 +151,7 @@ class CommandHandler extends events.EventEmitter {
 					`please wait ${timeLeft.toFixed(
 						1
 					)} more second(s) before reusing the \`${
-						command.name
+						command.help.name
 					}\` command.`
 				);
 			}
@@ -120,7 +159,7 @@ class CommandHandler extends events.EventEmitter {
 		timestamp.set(message.author.id, now);
 		setTimeout(() => timestamp.delete(message.author.id), cooldownAmount);
 		try {
-			command.execute(client,message, args);
+			command.execute(client, message, args);
 		} catch (error) {
 			/**
 			 * @event commandError
