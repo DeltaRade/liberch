@@ -1,6 +1,6 @@
 const jndb = require('jndb');
 const base=require('./SettingsDB')
-class JSONSettingsDB extends base {
+class JSONSettings extends base {
 	constructor() {
 		super()
 		this.conn = new jndb.Connection();
@@ -31,4 +31,4 @@ class JSONSettingsDB extends base {
 		return this.conn.secure(guild.id, {});
 	}
 }
-module.exports = JSONSettingsDB;
+module.exports = JSONSettings;

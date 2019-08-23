@@ -123,7 +123,7 @@ declare abstract class SettingsDB {
 	abstract clear(guildID: string): this;
 	abstract getAll(guildID: string): { [key: string]: any };
 }
-declare class JSONSettingsDB extends SettingsDB {
+declare class JSONSettings extends SettingsDB {
 	constructor();
 	get<T>(guild: Guild, key: string, defaultVal: T): T;
 	set(guild: Guild, key: string, value: any): this;
