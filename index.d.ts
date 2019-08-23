@@ -86,50 +86,11 @@ declare class FileWatch {
 	): this;
 }
 
-declare class TextPrompt {
-	constructor(client: Discord.Client);
-	protected collector: Discord.MessageCollector;
-	protected time: number;
-	protected lastCollected: Discord.Message;
-	public create(
-		message: Discord.Message,
-		msg: String,
-		options: { time: Number; maxprocess: Number; maxcollect: Number }
-	): void;
-	public on(
-		event: 'collect',
-		listener: (message: Discord.Message) => void
-	): this;
-	public on(
-		event: 'end',
-		listener: (collection: Discord.Collection<any, any>) => void
-	): this;
-}
-
-declare class ReactionPrompt {
-	constructor(client: Discord.Client);
-	protected collector: Discord.MessageCollector;
-	protected time: number;
-	protected lastCollected: Discord.MessageReaction;
-	public create(
-		message: Discord.Message,
-		msg: String,
-		options: {
-			time: Number;
-			emojisToCollect: [];
-			filterID: String;
-			maxprocess: Number;
-			maxcollect: Number;
-		}
-	): void;
-	public on(
-		event: 'collect',
-		listener: (reaction: Discord.MessageReaction) => void
-	): this;
-	public on(
-		event: 'end',
-		listener: (collection: Discord.Collection<any, any>) => void
-	): this;
+declare class ArgumentsCollector {
+	constructor(args: Argument[]);
+	public async obtain(
+		message: Message
+	): { values: { [key: string]: any }; canceled: boolean };
 }
 
 declare class Utils {
@@ -180,4 +141,23 @@ declare type CommandOptions = {
 	requireUserPermissions?: PermissionResolvable[];
 	requirePermissions?: PermissionResolvable[];
 };
-export { Client, Command, Utils, FileWatch, JSONSettingsDB };
+
+declare type Argument = {
+	key: string;
+	prompt: string;
+	type: ArgumentTypes;
+	default?: string;
+	time?: number;
+	attempts?: number;
+	errorMsg?: string;
+};
+
+declare type ArgumentTypes = 'channel' | 'user' | 'member' | 'role' | 'string';
+export {
+	Client,
+	Command,
+	Utils,
+	FileWatch,
+	JSONSettingsDB,
+	ArgumentsCollector,
+};
