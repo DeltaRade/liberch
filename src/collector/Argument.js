@@ -8,6 +8,7 @@ class Argument {
 	 *
 	 * @param {ArgumentInfo} info - Argument Info Options.
 	 */
+	// @ts-ignore
 	constructor(info = {}) {
 		this.usedAttempts = 0;
 		this.key = info.key;

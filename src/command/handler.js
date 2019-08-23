@@ -113,6 +113,7 @@ class CommandHandler extends events.EventEmitter {
 				missing = command.help.requiresBotPermissions.filter(
 					(permission) =>
 						!message.channel
+							// @ts-ignore
 							.permissionsFor(message.guild.me)
 							.has(permission)
 				);
